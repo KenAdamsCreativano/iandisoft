@@ -1,0 +1,35 @@
+# Netlify _redirects file
+# ---------------------------------------------------------------
+# 1) The one page that's genuinely retiring (spec Section 4.1: the
+#    old Gen-AI-for-Enterprise pitch is superseded by the new AI
+#    Advisory & Governance page). 301 so any inbound links/SEO
+#    weight land on its replacement instead of a 404.
+/ai-ml-2   /ai-advisory   301
+
+# 2) Clean URLs: every other retained page keeps the EXACT slug it
+#    has today on iandisoft.com (no .html), so search rankings and
+#    any external links carry straight over with zero redirects.
+/ai-advisory                              /ai-advisory.html                              200
+/workforce-solutions                      /workforce-solutions.html                      200
+/executive-search                         /executive-search.html                         200
+/federal-public-sector                    /federal-public-sector.html                    200
+/verity-grant                             /verity-grant.html                             200
+/medicaid-program-integrity               /medicaid-program-integrity.html               200
+/medtech-edtech                           /medtech-edtech.html                           200
+/enterprise-platforms                     /enterprise-platforms.html                     200
+/who-we-are                               /who-we-are.html                               200
+/leadership-team                          /leadership-team.html                          200
+/contact                                  /contact.html                                  200
+/ai-ml                                    /ai-ml.html                                    200
+/enterprise-data-intelligence             /enterprise-data-intelligence.html             200
+/cloud-computing-services                 /cloud-computing-services.html                 200
+/grant-management-platform                /grant-management-platform.html                200
+/public-assistance-program                /public-assistance-program.html                200
+/enterprise-document-management           /enterprise-document-management.html           200
+/id-verification-platform                 /id-verification-platform.html                 200
+/environmental-health-and-safety          /environmental-health-and-safety.html          200
+/enterprise-sales-operations              /enterprise-sales-operations.html               200
+/enterprise-expense-leakage-detection     /enterprise-expense-leakage-detection.html      200
+/cloud-cost-optimization                  /cloud-cost-optimization.html                   200
+/integrated-ai-based-safety               /integrated-ai-based-safety.html                200
+/government-customer-engagement-platform  /government-customer-engagement-platform.html   200
