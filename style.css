@@ -1368,7 +1368,8 @@ html{
   opacity:0;
   visibility:hidden;
   pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease,visibility 0s .2s
+  transition:opacity .2s ease,transform .2s ease,visibility 0s .2s;
+  min-height:calc(100svh - 78px)
 }
 
 .nav-menu.is-open{
@@ -1413,7 +1414,6 @@ html{
   padding:11px 10px 11px 14px;
   color:var(--slate);
   font-size:14px;
-  border-left:1px solid var(--line-strong)
 }
 
 .federal-tag{
