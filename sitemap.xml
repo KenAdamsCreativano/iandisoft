@@ -10,15 +10,21 @@
   <url><loc>https://www.iandisoft.com/medtech-edtech</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/enterprise-platforms</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/who-we-are</loc><priority>0.5</priority></url>
-  <url><loc>https://www.iandisoft.com/leadership-team</loc><priority>0.5</priority></url>
+  <url><loc>https://www.iandisoft.com/who-we-serve</loc><priority>0.5</priority></url>
+  <url><loc>https://www.iandisoft.com/insights</loc><priority>0.5</priority></url>
+  <url><loc>https://www.iandisoft.com/insights/data-governance-for-ai-transformation</loc><priority>0.3</priority></url>
+  <url><loc>https://www.iandisoft.com/insights/five-reasons-you-need-pim</loc><priority>0.3</priority></url>
+  <url><loc>https://www.iandisoft.com/insights/master-data-management-roadmap</loc><priority>0.3</priority></url>
+  <url><loc>https://www.iandisoft.com/insights/how-to-choose-a-pim-solution</loc><priority>0.3</priority></url>
+  <url><loc>https://www.iandisoft.com/insights/governing-the-data-lake</loc><priority>0.3</priority></url>
+  <url><loc>https://www.iandisoft.com/insights/enterprise-data-lake-getting-started</loc><priority>0.3</priority></url>
+  <url><loc>https://www.iandisoft.com/careers</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/contact</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/ai-ml</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/enterprise-data-intelligence</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/cloud-computing-services</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/grant-management-platform</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/public-assistance-program</loc><priority>0.5</priority></url>
-  <url><loc>https://www.iandisoft.com/enterprise-document-management</loc><priority>0.5</priority></url>
-  <url><loc>https://www.iandisoft.com/id-verification-platform</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/environmental-health-and-safety</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/enterprise-sales-operations</loc><priority>0.5</priority></url>
   <url><loc>https://www.iandisoft.com/enterprise-expense-leakage-detection</loc><priority>0.5</priority></url>

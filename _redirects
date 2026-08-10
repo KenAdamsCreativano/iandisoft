@@ -6,6 +6,11 @@
 #    weight land on its replacement instead of a 404.
 /ai-ml-2   /ai-advisory   301
 
+# 1b) Leadership & Team is retired; its content now lives in the Team
+#    section of Who We Are. 301 so the indexed URL and any inbound
+#    links land there instead of a 404.
+/leadership-team   /who-we-are#team   301
+
 # 2) Clean URLs: every other retained page keeps the EXACT slug it
 #    has today on iandisoft.com (no .html), so search rankings and
 #    any external links carry straight over with zero redirects.
@@ -18,18 +23,32 @@
 /medtech-edtech                           /medtech-edtech.html                           200
 /enterprise-platforms                     /enterprise-platforms.html                     200
 /who-we-are                               /who-we-are.html                               200
-/leadership-team                          /leadership-team.html                          200
 /contact                                  /contact.html                                  200
 /ai-ml                                    /ai-ml.html                                    200
 /enterprise-data-intelligence             /enterprise-data-intelligence.html             200
 /cloud-computing-services                 /cloud-computing-services.html                 200
 /grant-management-platform                /grant-management-platform.html                200
 /public-assistance-program                /public-assistance-program.html                200
-/enterprise-document-management           /enterprise-document-management.html           200
-/id-verification-platform                 /id-verification-platform.html                 200
 /environmental-health-and-safety          /environmental-health-and-safety.html          200
 /enterprise-sales-operations              /enterprise-sales-operations.html               200
 /enterprise-expense-leakage-detection     /enterprise-expense-leakage-detection.html      200
 /cloud-cost-optimization                  /cloud-cost-optimization.html                   200
 /integrated-ai-based-safety               /integrated-ai-based-safety.html                200
 /government-customer-engagement-platform  /government-customer-engagement-platform.html   200
+
+# 3) Pages added in the 2026 refresh. Same clean-URL treatment as above —
+#    without these the canonical URLs in each page's <head> and in sitemap.xml
+#    resolve to nothing.
+/who-we-serve                             /who-we-serve.html                             200
+/careers                                  /careers.html                                  200
+/insights                                 /insights.html                                 200
+/iandi-federal-coming-soon                /iandi-federal-coming-soon.html                200
+
+# 4) Insight articles. The canonical URLs nest them under /insights/ while the
+#    files sit at the root, so each needs an explicit mapping.
+/insights/data-governance-for-ai-transformation  /data-governance-for-ai-transformation.html  200
+/insights/five-reasons-you-need-pim              /five-reasons-you-need-pim.html              200
+/insights/master-data-management-roadmap         /master-data-management-roadmap.html         200
+/insights/how-to-choose-a-pim-solution           /how-to-choose-a-pim-solution.html           200
+/insights/governing-the-data-lake                /governing-the-data-lake.html                200
+/insights/enterprise-data-lake-getting-started   /enterprise-data-lake-getting-started.html   200

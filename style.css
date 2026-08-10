@@ -1,1638 +1,3866 @@
-:root{
-  --navy:#12284C;
-  --navy-2:#0A1830;
-  --orange:#ED4C2C;
-  --gold:#C6A35A;
-  --teal:#2A9D8F;
-  --ink:#172134;
-  --slate:#5A6472;
-  --muted:#778090;
-  --line:rgba(18,40,76,.12);
-  --line-strong:rgba(18,40,76,.20);
-  --soft:#EEF1F6;
-  --soft-2:#F7F8FB;
-  --white:#fff;
-  --max:1184px;
-  --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  --serif:Georgia,"Times New Roman",serif;
-  --radius:28px
+:root {
+  --navy: #12284C;
+  --navy-2: #0A1830;
+  --orange: #ED4C2C;
+  --gold: #C6A35A;
+  --teal: #2A9D8F;
+  --ink: #172134;
+  --slate: #5A6472;
+  --muted: #778090;
+  --line: rgba(18, 40, 76, .12);
+  --line-strong: rgba(18, 40, 76, .20);
+  --soft: #EEF1F6;
+  --soft-2: #F7F8FB;
+  --white: #fff;
+  --max: 1184px;
+  /* One size for every content icon, so cards, minis, phases, credentials and
+     illustrated PNGs all sit on the same square. */
+  --icon: 52px;
+  --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+  --radius: 28px
 }
 
-*{
-  box-sizing:border-box
+* {
+  box-sizing: border-box
 }
 
-html{
-  scroll-behavior:smooth;
-  background:var(--white)
+html {
+  scroll-behavior: smooth;
+  background: var(--white)
 }
 
-body{
-  margin:0;
-  font-family:var(--sans);
-  color:var(--ink);
-  background:var(--white);
-  -webkit-font-smoothing:antialiased;
-  text-rendering:geometricPrecision
+/* Column layout so a short page (contact, holding pages) still pushes the
+   footer to the bottom of the viewport instead of leaving a white band under
+   it on tall screens. */
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision
 }
 
-a{
-  color:inherit;
-  text-decoration:none
+body > main {
+  flex: 1 0 auto
 }
 
-a:focus-visible,button:focus-visible,.menu-toggle:focus-visible,.dropdown-panel a:focus-visible{
-  outline:2px solid var(--orange);
-  outline-offset:3px;
-  border-radius:6px
+body > .footer {
+  flex-shrink: 0
 }
 
-.skip-link{
-  position:absolute;
-  left:16px;
-  top:-60px;
-  background:var(--navy);
-  color:#fff;
-  padding:12px 18px;
-  border-radius:10px;
-  font-size:14px;
-  font-weight:650;
-  z-index:100;
-  transition:top .18s ease
+/* Headings balance across their lines, body copy avoids leaving a single word
+   stranded on the last line. */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance
 }
 
-.skip-link:focus{
-  top:16px
+p,
+.lead,
+.hero-copy,
+li,
+.stat span,
+.step p,
+.credential strong {
+  text-wrap: pretty
 }
 
-img{
-  display:block;
-  max-width:100%
+a {
+  color: inherit;
+  text-decoration: none
 }
 
-.page{
-  width:min(var(--max),calc(100vw - 44px));
-  margin:0 auto
-}
-.page1{
-  width:min(var(--max),calc(100vw - 44px));
-  margin:0 auto
-}
-.page-two{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:36px;
-  padding:40px
-}
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:rgba(255,255,255,.9);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line)
+a:focus-visible,
+button:focus-visible,
+.menu-toggle:focus-visible,
+.dropdown-panel a:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 6px
 }
 
-.nav{
-  height:78px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:28px
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 650;
+  z-index: 100;
+  transition: top .18s ease
 }
 
-.logo{
-  width:154px;
-  height:auto
+.skip-link:focus {
+  top: 16px
 }
 
-.nav-menu{
-  display:flex;
-  align-items:center;
-  gap:26px;
-  font-size:13.5px;
-  font-weight:650;
-  color:var(--slate);
-  letter-spacing:-.01em
+img {
+  display: block;
+  max-width: 100%
 }
 
-.nav-menu a{
-  transition:color .18s ease
+.page {
+  width: min(var(--max), calc(100vw - 44px));
+  margin: 0 auto
 }
 
-.nav-menu a:hover{
-  color:var(--navy)
+.page1 {
+  width: min(var(--max), calc(100vw - 44px));
+  margin: 0 auto
 }
 
-.dropdown{
-  position:relative;
-  padding:30px 0
+/* Contact form + details pair. Matches `.page`'s width so the columns line up
+   with the nav, hero, and footer; it previously ran full-bleed with a fixed
+   40px padding, which only looked aligned near 1280px and drifted badly wider. */
+.page-two {
+  width: min(var(--max), calc(100vw - 44px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px
 }
 
-.dropdown-panel{
-  position:absolute;
-  top:74px;
-  left:-22px;
-  min-width:280px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:10px;
-  box-shadow:0 22px 70px rgba(18,40,76,.12);
-  opacity:0;
-  visibility:hidden;
-  transform:translateY(8px);
-  transition:.18s ease
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, .9);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line)
 }
 
-.dropdown:hover .dropdown-panel{
-  opacity:1;
-  visibility:visible;
-  transform:translateY(0)
+.nav {
+  height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px
 }
 
-.dropdown-panel a{
-  display:block;
-  padding:12px 14px;
-  border-radius:12px;
-  color:var(--ink)
+.logo {
+  width: 154px;
+  height: auto
 }
 
-.dropdown-panel a:hover{
-  background:var(--soft-2)
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--slate);
+  letter-spacing: -.01em
 }
 
-.federal-tag{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  color:var(--navy)
+.nav-menu a {
+  transition: color .18s ease
 }
 
-.federal-tag:before{
-  content:"";
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--orange)
+.nav-menu a:hover {
+  color: var(--navy)
 }
 
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:46px;
-  padding:0 20px;
-  border-radius:999px;
-  font-size:13.5px;
-  font-weight:760;
-  letter-spacing:-.012em;
-  transition:transform .18s ease,background .18s ease,border-color .18s ease
+.dropdown {
+  position: relative;
+  padding: 30px 0
 }
 
-.btn:hover{
-  transform:translateY(-1px)
+.dropdown-panel {
+  position: absolute;
+  top: 74px;
+  left: -22px;
+  min-width: 280px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: 0 22px 70px rgba(18, 40, 76, .12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: .18s ease
 }
 
-.btn-primary{
-  background:var(--orange);
-  color:#fff;
-  box-shadow:0 12px 30px rgba(237,76,44,.18);
+.dropdown:hover .dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0)
 }
 
-.btn-outline{
-  border:1px solid var(--line-strong);
-  color:var(--navy);
-  background:#fff
+.dropdown-panel a {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--ink)
 }
 
-.hero{
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(180deg,#fff 0%,#F7F8FB 100%);
-  border-bottom:1px solid var(--line)
+.dropdown-panel a:hover {
+  background: var(--soft-2)
 }
 
-.hero .page{
-  min-height:calc(100svh - 78px);
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 470px;
-  gap:76px;
-  align-items:center;
-  padding:82px 0
+.federal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--navy)
 }
 
-.breadcrumb{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:26px
+.federal-tag:before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange)
 }
 
-.breadcrumb a{
-  color:var(--slate)
+.federal-logo-link {
+  display: inline-flex;
+  align-items: center;
+  transition: opacity .18s ease
 }
 
-.breadcrumb a:hover{
-  color:var(--navy)
+.federal-logo-link:hover {
+  opacity: .75
 }
 
-.eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:22px;
-  color:var(--orange);
-  text-transform:uppercase;
-  font-size:12px;
-  letter-spacing:.15em;
-  font-weight:800
+.federal-logo {
+  height: 28px;
+  width: auto;
+  display: block;
+  margin-top: -4px
 }
 
-.eyebrow:before{
-  content:"";
-  width:32px;
-  height:1px;
-  background:var(--orange)
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 760;
+  letter-spacing: -.012em;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease
 }
 
-h1,h2,h3,p{
-  margin-top:0
+.btn:hover {
+  transform: translateY(-1px)
 }
 
-h1{
-  font-family:var(--serif);
-  color:var(--navy);
-  font-size:68px;
-  line-height:.94;
-  letter-spacing:-.018em;
-  font-weight:500;
-  margin-bottom:24px
+.btn-primary {
+  background: var(--orange);
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(237, 76, 44, .18);
 }
 
-.hero-copy{
-  max-width:735px;
-  color:var(--slate);
-  font-size:20px;
-  line-height:1.5;
-  letter-spacing:-.015em;
-  margin-bottom:34px
-}
-.hero-copy2{
-  margin-bottom:-50px;
-  margin-top:-180px;
-}
-.actions{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:30px;
+.federal-btn {
+  background: transparent;
+  border: 1px solid #E2E4E9;
 }
 
-.visual{
-  min-height:510px;
-  border:1px solid var(--line);
-  border-radius:34px;
-  background:#fff;
-  position:relative;
-  overflow:hidden;
-  box-shadow:0 24px 80px rgba(18,40,76,.08)
+.federal-btn:hover {
+  border-color: #D5D8DE;
 }
 
-.visual:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at 72% 28%,rgba(237,76,44,.14),transparent 17rem),radial-gradient(circle at 20% 70%,rgba(18,40,76,.08),transparent 18rem)
+.btn-outline {
+  border: 1px solid var(--line-strong);
+  color: var(--navy);
+  background: #fff
 }
 
-.graph{
-  position:absolute;
-  inset:50px
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fff 0%, #F7F8FB 100%);
+  border-bottom: 1px solid var(--line)
 }
 
-.graph svg{
-  width:100%;
-  height:100%
+.video-hero {
+  position: relative;
+  width: 100%;
+  height: calc(100svh - 78px);
+  overflow: hidden;
+  background: var(--navy)
 }
 
-.node{
-  position:absolute;
-  width:11px;
-  height:11px;
-  border-radius:50%;
-  background:var(--orange);
-  box-shadow:0 0 0 8px rgba(237,76,44,.1)
+.video-hero video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block
 }
 
-.node.a{
-  left:8%;
-  top:14%
+.hero .page {
+  min-height: calc(100svh - 78px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 470px;
+  gap: 76px;
+  align-items: center;
+  padding: 82px 0
 }
 
-.node.b{
-  right:14%;
-  top:20%
+.breadcrumb {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(calc(-1 * min(var(--max), calc(100vw - 44px)) / 2));
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 999px;
+  box-shadow: 0 12px 28px rgba(237, 76, 44, .28)
 }
 
-.node.c{
-  left:28%;
-  top:55%
+.breadcrumb a {
+  color: #fff
 }
 
-.node.d{
-  right:22%;
-  bottom:18%
+.breadcrumb a:hover {
+  color: rgba(255, 255, 255, .8)
 }
 
-.node.e{
-  left:52%;
-  bottom:34%;
-  background:var(--navy)
+.breadcrumb span {
+  color: rgba(255, 255, 255, .78)
 }
 
-.graph-line{
-  position:absolute;
-  height:1px;
-  background:linear-gradient(90deg,rgba(18,40,76,.18),rgba(237,76,44,.5));
-  transform-origin:left
+/* `.breadcrumb` is fixed and out of flow, so this reserved room for it. The
+   hero's own top padding (72-86px) already clears the pill on its own, so the
+   extra 64px only opened a band of dead space under it. Kept as a hook rather
+   than removed from 21 pages of markup. */
+.breadcrumb-spacer {
+  height: 0
 }
 
-.g1{
-  width:240px;
-  left:10%;
-  top:16%;
-  transform:rotate(8deg)
+.hero.split .page > .breadcrumb-spacer {
+  grid-column: 1 / -1
 }
 
-.g2{
-  width:230px;
-  left:30%;
-  top:58%;
-  transform:rotate(-28deg)
+/* Ten inner pages wrap the breadcrumb in its own section. Because the crumb is
+   fixed, that section has no content — it was contributing 128px of empty
+   padding above the hero. The hero below it supplies the clearance. */
+.section.pb-0:has(> .page > .breadcrumb) {
+  padding-top: 0
 }
 
-.g3{
-  width:230px;
-  right:20%;
-  top:23%;
-  transform:rotate(63deg)
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+  color: var(--orange);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .15em;
+  font-weight: 800
 }
 
-.g4{
-  width:210px;
-  right:24%;
-  bottom:21%;
-  transform:rotate(166deg)
+.eyebrow:before {
+  display: none
 }
 
-.visual-card{
-  position:absolute;
-  left:34px;
-  right:34px;
-  bottom:34px;
-  padding:24px;
-  border-radius:20px;
-  background:rgba(255,255,255,.88);
-  border:1px solid var(--line);
-  backdrop-filter:blur(12px)
+h1,
+h2,
+h3,
+p {
+  margin-top: 0
 }
 
-.visual-card strong{
-  display:block;
-  color:var(--navy);
-  font-size:17px;
-  margin-bottom:7px
+h1 {
+  font-family: var(--serif);
+  color: var(--navy);
+  font-size: 68px;
+  line-height: .94;
+  letter-spacing: -.018em;
+  font-weight: 500;
+  margin-bottom: 24px;
+  text-wrap: balance
 }
 
-.visual-card span{
-  display:block;
-  color:var(--slate);
-  font-size:14px;
-  line-height:1.55
+/* Opt-in looser leading for multi-line h1s where descenders/ascenders collide */
+.h1-loose {
+  line-height: 1.1
 }
 
-.section{
-  padding:clamp(84px,10vw,132px) 0;
-  border-bottom:1px solid var(--line);
-  background:#fff
+.no-orphan {
+  text-wrap: pretty
 }
 
-.section.soft{
-  background:var(--soft-2)
+/* Keeps a hyphenated term whole so it wraps as one word rather than splitting
+   at its hyphen. */
+.nowrap {
+  white-space: nowrap
 }
 
-.section.navy{
-  background:var(--navy);
-  color:#fff
+.hero.navy h1.h1-tight {
+  font-size: 48px
 }
 
-.section-head{
-  display:grid;
+.hero-copy {
+  max-width: 735px;
+  color: var(--slate);
+  font-size: 20px;
+  line-height: 1.5;
+  text-wrap: pretty;
+  letter-spacing: -.015em;
+  margin-bottom: 34px
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.visual {
+  min-height: 510px;
+  border: 1px solid var(--line);
+  border-radius: 34px;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(18, 40, 76, .08)
+}
+
+.visual:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 72% 28%, rgba(237, 76, 44, .14), transparent 17rem), radial-gradient(circle at 20% 70%, rgba(18, 40, 76, .08), transparent 18rem)
+}
+
+/* This panel holds the illustration above the caption card. Both used to be
+   absolutely positioned, so the artwork ran underneath the card. Laying them
+   out in flow instead means the card always claims its own height and the gap
+   holds even when its text wraps to more lines on narrow screens. */
+.hero .visual:has(> .visual-card) {
+  display: flex;
+  flex-direction: column
+}
+
+/* Basis 0 rather than auto: the illustration takes the room left over after the
+   card, instead of its own intrinsic height driving the panel taller. */
+.graph {
+  position: relative;
+  inset: auto;
+  flex: 1 1 0;
+  min-height: 0;
+  margin: 30px 40px 22px
+}
+
+.graph svg {
+  width: 100%;
+  height: 100%
+}
+
+.node {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 8px rgba(237, 76, 44, .1)
+}
+
+.node.a {
+  left: 8%;
+  top: 14%
+}
+
+.node.b {
+  right: 14%;
+  top: 20%
+}
+
+.node.c {
+  left: 28%;
+  top: 55%
+}
+
+.node.d {
+  right: 22%;
+  bottom: 18%
+}
+
+.node.e {
+  left: 52%;
+  bottom: 34%;
+  background: var(--navy)
+}
+
+.graph-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(18, 40, 76, .18), rgba(237, 76, 44, .5));
+  transform-origin: left
+}
+
+.g1 {
+  width: 240px;
+  left: 10%;
+  top: 16%;
+  transform: rotate(8deg)
+}
+
+.g2 {
+  width: 230px;
+  left: 30%;
+  top: 58%;
+  transform: rotate(-28deg)
+}
+
+.g3 {
+  width: 230px;
+  right: 20%;
+  top: 23%;
+  transform: rotate(63deg)
+}
+
+.g4 {
+  width: 210px;
+  right: 24%;
+  bottom: 21%;
+  transform: rotate(166deg)
+}
+
+.visual-card {
+  flex: 0 0 auto;
+  margin: 0 34px 34px;
+  padding: 24px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .88);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(12px)
+}
+
+.visual-card strong {
+  display: block;
+  color: var(--navy);
+  font-size: 17px;
+  margin-bottom: 7px
+}
+
+.visual-card span {
+  display: block;
+  color: var(--slate);
+  font-size: 14px;
+  line-height: 1.55
+}
+
+.section {
+  padding: clamp(84px, 10vw, 132px) 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff
+}
+
+.pb-tight {
+  padding-bottom: clamp(36px, 4vw, 56px)
+}
+
+.section.soft {
+  background: var(--soft-2)
+}
+
+.section.navy {
+  background: var(--navy);
+  color: #fff
+}
+
+.section-head {
+  display: grid;
   /* left column empty, right column filled */
-  grid-template-columns: minmax(0,2fr) 800px;
-  gap:clamp(36px,6vw,72px);
-  margin-bottom:clamp(42px,6vw,72px)
+  grid-template-columns: minmax(0, 2fr) 800px;
+  gap: clamp(36px, 6vw, 72px);
+  margin-bottom: clamp(42px, 6vw, 72px)
 }
 
-.label{
-  color:var(--orange);
-  font-size:12px;
-  letter-spacing:.15em;
-  text-transform:uppercase;
-  font-weight:800;
-  margin-bottom:12px;
+.section-head.align-left {
+  grid-template-columns: 800px minmax(0, 2fr);
 }
 
-h2{
-  font-family:var(--serif);
-  font-size:clamp(38px,5vw,68px);
-  line-height:1;
-  letter-spacing:-.018em;
-  font-weight:500;
-  color:var(--navy);
-  margin-bottom:18px
+/* The two columns hold unequal amounts of copy, so centre them against each
+   other rather than letting the shorter one hang from the top. */
+.section-head.equal {
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 
-.navy h2{
-  color:#fff
+/* A section-head that ends its section has nothing to be spaced away from, and
+   its bottom margin stacks onto the section's own padding — leaving more room
+   below the copy than above it. */
+.section .page > .section-head:last-child {
+  margin-bottom: 0
 }
 
-.lead{
-  color:var(--slate);
-  font-size:18px;
-  line-height:1.6;
-  letter-spacing:-.012em;
-  max-width:550px;
+.section-head:not(.align-left):not(.equal):not(.keep-split):has(>div:first-child:empty) {
+  grid-template-columns: 800px minmax(0, 2fr);
 }
 
-.navy .lead{
-  color:rgba(255,255,255,.76)
+.section-head:not(.align-left):not(.equal):not(.keep-split):has(>div:first-child:empty)>div:first-child {
+  order: 2
 }
 
-.credential-strip{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
-  margin-top:-36px;
-  position:relative;
-  z-index:4
+.section-head:not(.align-left):not(.equal):not(.keep-split):has(>div:first-child:empty)>div:last-child {
+  order: 1
 }
 
-.credential{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  box-shadow:0 16px 50px rgba(18,40,76,.08)
+.section-head:not(.align-left):not(.equal):not(.keep-split):not(:has(>div:first-child:empty)) {
+  grid-template-columns: 1fr;
+  gap: 8px
 }
 
-.icon{
-  width:42px;
-  height:42px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--navy);
-  flex:0 0 auto
+.indent-right {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 800px;
+  gap: clamp(36px, 6vw, 72px);
 }
 
-.icon svg{
-  width:100%;
-  height:100%;
-  stroke:currentColor;
-  stroke-width:1.55;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  fill:none
+.label {
+  color: var(--orange);
+  font-size: 12px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 12px;
 }
 
-.credential .icon{
-  width:52px;
-  height:52px;
-  color:var(--navy);
-  background:var(--soft);
-  border-radius:50%;
-  padding:12px
+.subhead {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 500;
+  letter-spacing: -.01em;
+  color: var(--navy);
+  text-transform: none;
+  margin-bottom: 12px;
 }
 
-.credential strong{
-  font-size:14px;
-  color:var(--navy)
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(38px, 5vw, 68px);
+  line-height: 1;
+  letter-spacing: -.018em;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 18px;
+  text-wrap: balance
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--line);
-  border-left:1px solid var(--line)
+.navy h2 {
+  color: #fff
 }
 
-.stat{
-  padding:34px 28px;
-  min-height:160px;
-  border-right:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  background:#fff
+/* Opt-in looser leading for multi-line headings that feel congested */
+.h2-loose {
+  line-height: 1.16
 }
 
-.stat strong{
-  display:block;
-  font-size:56px;
-  line-height:.95;
-  color:var(--navy);
-  font-weight:500;
-  letter-spacing:-.03em;
-  margin-bottom:10px
+.lead {
+  color: var(--slate);
+  font-size: 18px;
+  line-height: 1.6;
+  letter-spacing: -.012em;
+  max-width: 550px;
+  text-wrap: pretty;
 }
 
-.stat span{
-  display:block;
-  color:var(--slate);
-  
-  font-size:14px;
-  font-weight:650;
-  line-height:1.4
+.team-lead-shift {
+  margin-left: 85px
 }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px
-}
-.card .icon{
-  margin-bottom:18px
-}
-/* Desktop: single row with horizontal connectors */
-.pipeline.four {
-    display: flex;
-    align-items: center;
-}
-
-.pipeline.four .connector {
-    flex: 1;
-    height: 1px;
-    background-color: #12284C;
-    opacity: 0.3;
-    margin: 0 8px;
-    align-self: center;
-}
-
-/* Mobile: 2 columns x 2 rows, hide the connector lines */
-@media (max-width: 640px) {
-    .pipeline.four {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 24px 16px;
-    }
-
-    .pipeline.four .phase {
-        text-align: center;
-    }
-
-    .pipeline.four .connector {
-        display: none;
-    }
-}
-.phase{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  font-size:20px;
-}
-.phase2{
-  display:grid;
-  grid-template-columns:1fr;
-  justify-content:center;
-
-
-}
-.phase strong{
-  padding:5px 12px;
-  border-radius:999px;
-  background:#FEF1EE;
-  color:var(--orange);
-
-  
-}
-.phase span{
-    padding:5px 8px;
-
-}
-
-.card,.mini,.person,.platform-card,.product-panel{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:28px;
-  transition:.18s ease;
-  position:relative;
-  overflow:hidden
-}
-.graphic svg {
-    width: 100%;
-    max-width: 380px;   /* or whatever width you want */
-    height: auto;       /* keeps aspect ratio locked to the viewBox (260:480) */
-    display: block;
-    margin: 0 auto;     /* centers it if the container is wider */
-    margin-top: 30px;  /* optional, adds some space above the graphic */
-}
-.graphic2 svg {
-    width: 100%;
-    max-width: 380px;   /* or whatever width you want */
-    height: auto;       /* keeps aspect ratio locked to the viewBox (260:480) */
-    display: block;
-    margin: 0 auto;     /* centers it if the container is wider */
-    margin-top: 0px;  /* optional, adds some space above the graphic */
-}
-.graphic1 svg {
-    width: 100%;
-    max-width: 180px;   /* or whatever width you want */
-    height: auto;       /* keeps aspect ratio locked to the viewBox (260:480) */
-    display: block;
-    margin: 0 auto;     /* centers it if the container is wider */
-        margin-top: 20px;  /* optional, adds some space above the graphic */
-
-}
-.card:hover,.platform-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 20px 70px rgba(18,40,76,.10);
-  border-color:rgba(237,76,44,.25)
-}
-
-.card .icon,.mini .icon,.phase .icon{
-  color:var(--orange);
-  width:50px;
-  height:50px;
-  background:linear-gradient(155deg,rgba(237,76,44,.12),rgba(237,76,44,.05));
-  border-radius:50%;
-  padding:14px
-}
-
-.card .icon svg,.mini .icon svg,.phase .icon svg{
-  stroke-width:1.7
-}
-
-.card h3,.mini h3,.phase h3,.person h3,.platform-card h3{
-  font-size:21px;
-  line-height:1.15;
-  letter-spacing:-.025em;
-  color:var(--navy);
-  margin-bottom:10px
-}
-
-.card p,.mini p,.phase p,.person p,.platform-card p{
-  color:var(--slate);
-  font-size:15px;
-  line-height:1.58;
-  margin:0
-}
-
-.learn{
-  display:inline-block;
-  margin-top:24px;
-  color:var(--orange);
-  font-size:13px;
-  font-weight:760
-}
-
-.product-spotlight{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px
-}
-
-.product-panel{
-  min-height:380px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between
-}
-
-.product-panel.gold{
-  background:linear-gradient(135deg,#fff,#FBF7EC)
-}
-
-.product-panel.teal{
-  background:linear-gradient(135deg,#fff,#EEF8F7)
-}
-
-.product-panel .icon{
-  width:50px;
-  height:50px;
-  color:var(--orange)
-}
-
-.product-panel h3{
-  font-family:var(--serif);
-  font-size:42px;
-  line-height:1;
-  letter-spacing:-.015em;
-  color:var(--navy);
-  font-weight:500;
-  margin:0 0 12px
-}
-
-.product-panel p{
-  color:var(--slate);
-  font-size:16px;
-  line-height:1.6;
-  max-width:530px
-}
-
-.band{
-  border-radius:34px;
-  background:var(--navy);
-  color:#fff;
-  padding:clamp(36px,6vw,68px);
-  position:relative;
-  overflow:hidden
-}
-
-.band:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:radial-gradient(circle at 16px 16px,rgba(255,255,255,.14) 1.2px,transparent 1.2px);
-  background-size:30px 30px;
-  opacity:.22
-}
-
-.band>*{
-  position:relative;
-  z-index:2
-}
-
-.band h2{
-  color:#fff
-}
-
-.band p{
-  color:rgba(255,255,255,.76)
-}
-.same-row{
-  display:flex;
-  gap:5px;
-  align-items:center;
-}
-.same-row .label{
-    color:var(--gold);
-
-}
-.two{
-  display:flex;
-  gap:22px;
-  align-items:centre;
-}
-
-.three{
-  display:flex;
-  flex-direction:row;
-  justify-content:space-between;
-  gap:22px;
-  width:100%;
-}
-
-.four{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px
-}
-
-.mini{
-  display:grid;
-  grid-template-columns:52px 1fr;
-  gap:18px;
-  align-items:start
-}
-
-.mini .icon{
-  margin:0;
-  width:42px;
-  height:42px
-}
-
-.pipeline{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:12px
-}
-
-.pipeline.four{
-  grid-template-columns:repeat(4,1fr)
-}
-
-.step{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:20px;
-  min-height:190px
-}
-
-.step b{
-  display:block;
-  color:var(--orange);
-  font-size:12px;
-  letter-spacing:.14em;
-  margin-bottom:32px
-}
-
-.step h3{
-  font-size:17px;
-  line-height:1.2;
-  color:var(--navy);
-  letter-spacing:-.02em;
-  margin-bottom:8px
-}
-
-.step p{
-  color:var(--slate);
-  font-size:13.5px;
-  line-height:1.5;
-  margin:0
-}
-
-.monogram{
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:var(--serif);
-  font-size:23px;
-  font-weight:600;
-  background:var(--navy);
-  color:#fff;
-  flex:0 0 auto
-}
-
-.monogram.orange{
-  background:var(--orange)
-}
-
-.monogram.gold{
-  background:var(--gold);
-  color:var(--navy-2)
-}
-
-.monogram.lg{
-  width:118px;
-  height:118px;
-  font-size:42px
-}
-
-.person-card{
-  display:flex;
-  flex-direction:column;
-  gap:24px;
-  height:100%
-}
-
-.person-card .role{
-  color:var(--orange);
-  font-size:12px;
-  font-weight:750;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  margin-bottom:2px;
-  display:block
-}
-
-.person-card h3{
-  margin-bottom:2px
-}
-
-.person-card.is-open{
-  border-style:dashed;
-  border-color:var(--line-strong);
-  background:var(--soft-2)
-}
-
-.person-card.is-open .monogram{
-  background:#fff;
-  border:1.5px dashed var(--line-strong);
-  color:var(--muted)
-}
-
-.founder-feature{
-  display:grid;
-  grid-template-columns:150px 1fr;
-  gap:38px;
-  align-items:start
-}
-
-.founder-feature .tags{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:18px
-}
-
-.founder-feature .tag{
-  background:var(--soft);
-  color:var(--navy);
-  font-size:12.5px;
-  font-weight:650;
-  padding:7px 14px;
-  border-radius:999px
-}
-
-@media(max-width:640px){
-  .founder-feature{
-    grid-template-columns:1fr;
-    text-align:left
+.lead-full {
+  max-width: 800px;
+  text-wrap: pretty;
+}
+
+.navy .lead {
+  color: rgba(255, 255, 255, .76)
+}
+
+.credential-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: -36px;
+  position: relative;
+  z-index: 4
+}
+
+/* Home page strip only. Spans the full page width so the row runs from the
+   "Talk to Us" button on the hero's left edge to the "Established delivery"
+   card on its right. */
+.credential-strip.cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* The strip shares the first screen with the hero it overlaps. The strip pulls
+   itself up 36px, so the visible gap between the hero's copy and the cards is
+   this padding minus that 36 — it has to stay well above 36 or the cards crowd
+   the buttons. Height is reclaimed from the visual panel below instead. */
+/* The floor makes the hero fill whatever height is left once the header, the
+   part of the strip that hangs below the hero (card height less the 36px
+   overlap) and a little clearance are accounted for. Without it the hero
+   collapses to its content on tall screens and the next sections ride up into
+   the first view. */
+.hero:has(+ .credential-strip.cols-5) .page {
+  min-height: calc(100svh - 161px);
+  padding: 80px 0
+}
+
+/* The panel is the tallest thing in the hero and the only part that can give
+   ground without the copy reflowing, so it shrinks on short screens. The graph
+   is inset-positioned with a viewBox, so it scales down with the panel. */
+.hero:has(+ .credential-strip.cols-5) .visual {
+  min-height: min(510px, calc(100svh - 340px))
+}
+
+/* Below ~800px tall the panel has shrunk as far as it usefully goes and the
+   copy column becomes the floor holding the strip under the fold. The headline
+   steps down and the padding tightens to buy back the remaining height —
+   scoped to viewport height so full-size screens keep the 68px h1. */
+@media (max-height: 800px) {
+  .hero:has(+ .credential-strip.cols-5) .page {
+    padding: 60px 0
+  }
+
+  .hero:has(+ .credential-strip.cols-5) h1 {
+    font-size: clamp(46px, 4.4vw, 56px)
   }
 }
 
-.timeline-wrap{
-  padding:36px 0 6px
-}
-
-.timeline-wrap svg{
-  width:100%;
-  height:auto;
-  display:block
-}
-
-.callout{
-  background:var(--soft-2);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:clamp(30px,5vw,40px);
-    width:100%;
-
-}
-
-.statement{
-  font-family:var(--serif);
-  color:var(--navy);
-  font-size:clamp(28px,3.8vw,48px);
-  line-height:1.14;
-  letter-spacing:-.018em
-}
-
-.statement-block{
-  position:relative;
-  overflow:hidden;
-  padding:clamp(70px,10vw,110px) 0
-}
-
-.statement-block .page{
-  position:relative;
-  z-index:1;
-  max-width:920px
-}
-
-.statement-block .statement{
-  max-width:820px
-}
-
-.lattice-watermark{
-  position:absolute;
-  inset:0;
-  opacity:.05;
-  pointer-events:none
-}
-
-.lattice-watermark svg{
-  width:100%;
-  height:100%
-}
-
-.bullets{
-  display:grid;
-  gap:12px;
-  margin:22px 0 0;
-  padding:0;
-  list-style:none
-}
-
-.bullets li{
-  padding-left:22px;
-  position:relative;
-  color:var(--slate);
-  line-height:1.58
-}
-
-.bullets li:before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:.7em;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:var(--orange)
-}
-
-.footer{
-  background:var(--navy-2);
-  color:#fff;
-  padding:56px 0
-}
-
-.footer-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr 1.2fr;
-  gap:34px
-}
-
-.footer-logo{
-  width:150px;
-  margin-bottom:18px
-}
-
-.footer h4{
-  margin:0 0 14px;
-  color:#fff;
-  font-size:14px
-}
-
-.footer a,.footer p{
-  display:block;
-  color:rgba(255,255,255,.68);
-  font-size:14px;
-  line-height:1.8;
-  margin:0
-}
-
-.footer a:hover{
-  color:#fff
-}
-
-.hero.small .page{
-  min-height:420px;
-  grid-template-columns:1fr;
-  padding:86px 0
-}
-.hero.small h1{
-  font-size:clamp(48px,6vw,86px);
-  max-width:980px
-}
-
-.hero.small.split .page{
-  min-height:auto;
-  grid-template-columns:minmax(0,1fr) 400px;
-  gap:56px;
-  padding:72px 0
-}
-
-.hero.small.split h1{
-  max-width:640px;
-  font-size:clamp(34px,4vw,52px)
-}
-
-.visual.side{
-  min-height:380px;
-  align-items:center;
-}
-
-.visual.side .graphic{
-  position:absolute;
-  inset:36px
-}
-
-.hero.navy{
-  background:var(--navy);
-  border-bottom:0
-}
-
-.hero.navy .eyebrow{
-  color:var(--gold)
-}
-
-.hero.navy .eyebrow:before{
-  background:var(--gold)
-}
-
-.hero.navy h1{
-  color:#fff
-}
-
-.hero.navy .hero-copy{
-  color:rgba(255,255,255,.76)
-}
-
-.hero.navy .visual{
-  background:rgba(255,255,255,.05);
-  border-color:rgba(255,255,255,.14);
-  box-shadow:none
-}
-
-.hero.navy.teal .eyebrow{
-  color:#6FC7BB
-}
-
-.hero.navy.teal .eyebrow:before{
-  background:#6FC7BB
-}
-
-.hero-tiles{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-  margin-top:12px
-}
-
-.hero-tile{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:26px;
-  display:flex;
-  align-items:center;
-  gap:16px
-}
-
-.hero-tile .icon{
-  width:44px;
-  height:44px;
-  color:var(--orange);
-  flex:0 0 auto
-}
-
-.hero-tile strong{
-  display:block;
-  color:var(--navy);
-  font-size:16px;
-  margin-bottom:3px
-}
+.credential {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 13px;
+  box-shadow: 0 16px 50px rgba(18, 40, 76, .08)
+}
+
+.icon {
+  width: var(--icon);
+  height: var(--icon);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navy);
+  flex: 0 0 auto
+}
 
-.hero-tile span{
-  display:block;
-  color:var(--slate);
-  font-size:13.5px;
-  line-height:1.5
+.icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none
 }
 
-.note{
-  font-size:13px;
-  color:var(--muted)
+.credential .icon {
+  width: var(--icon);
+  height: var(--icon);
+  color: var(--navy);
+  background: var(--soft);
+  border-radius: 50%;
+  padding: 9px
 }
 
-.form{
-  display:grid;
-  gap:14px;
-  width:100%;
+.credential strong {
+  font-size: 14px;
+  color: var(--navy)
 }
 
-.field-label{
-  display:block;
-  font-size:13px;
-  font-weight:650;
-  color:var(--navy);
-  margin-bottom:7px
+/* "Years in Business" is too long to sit on one line beside the badge, so the
+   flex item shrinks and the text wraps — but the box keeps its shrunk width,
+   staying far wider than the longest wrapped line and stranding dead space to
+   the right of the text. min-content pulls the box in to the widest line, which
+   lets justify-content actually centre the pair. The wrap is unchanged: "Years
+   in" still fits within the width of "Business". */
+.credential .icon-img + strong {
+  width: min-content
 }
 
-.input{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:14px 16px;
-  font:inherit;
-  color:var(--ink);
-  background:#fff;
-  transition:border-color .18s ease,box-shadow .18s ease
+/* Credential cards that hold a certification logo instead of icon + text */
+.credential.logo-card {
+  padding: 10px 12px
 }
 
-.input:focus{
-  outline:none;
-  border-color:var(--navy);
-  box-shadow:0 0 0 4px rgba(18,40,76,.09)
+.credential-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 68px;
+  object-fit: contain
 }
 
-textarea.input{
-  min-height:150px;
-  resize:vertical
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line)
 }
 
-.form-submit{
-  border:0;
-  cursor:pointer;
-  font:inherit
+.stat {
+  padding: 34px 28px;
+  min-height: 160px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #fff
 }
 
-.form-status{
-  min-height:22px;
-  font-size:14px;
-  font-weight:600
+.stat strong {
+  display: block;
+  font-size: 56px;
+  line-height: .95;
+  color: var(--navy);
+  font-weight: 500;
+  letter-spacing: -.03em;
+  margin-bottom: 10px
 }
 
-.form-status.is-error{
-  color:#B3261E
+.stat span {
+  display: block;
+  color: var(--slate);
+
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.4
 }
 
-.form-status.is-success{
-  color:#1E7A4C
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px
 }
 
-.holding{
-  position:relative;
-  overflow:hidden;
-  min-height:100svh;
-  background:var(--navy);
-  color:#fff;
-  display:grid;
-  place-items:center;
-  text-align:center
+.cards-1col {
+  grid-template-columns: 1fr;
+  max-width: 640px
 }
 
-.holding .page{
-  position:relative;
-  z-index:1
+/* Row-count overrides for grids whose item count doesn't divide by the default
+   3, which strands a lone item on a half-empty final row. */
+.stats.cols-4 {
+  grid-template-columns: repeat(4, 1fr)
 }
 
-.holding img{
-  width:190px;
-  margin:0 auto 50px
+.cards.cols-2 {
+  grid-template-columns: repeat(2, 1fr)
 }
 
-.holding h1{
-  color:#fff;
-  font-size:clamp(48px,7vw,90px)
+.cards.cols-4 {
+  grid-template-columns: repeat(4, 1fr)
 }
 
-.holding p{
-  color:rgba(255,255,255,.75);
-  font-size:18px;
-  max-width:640px;
-  margin:0 auto 28px;
-  line-height:1.6
+.card .icon {
+  margin-bottom: 18px
 }
 
-[data-reveal]{
-  opacity:0;
-  transform:translateY(16px);
-  transition:opacity .65s ease,transform .65s ease
+/* Dark timeline with dot markers on a top line */
+.pipeline.four {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 56px 48px 64px;
+  position: relative;
 }
 
-[data-reveal].is-visible{
-  opacity:1;
-  transform:translateY(0)
+/* single continuous line running through the dot centers */
+.pipeline.four::before {
+  content: "";
+  position: absolute;
+  left: 48px;
+  right: 48px;
+  top: 78px;
+  height: 1px;
+  background: var(--line);
 }
 
-.nav-actions{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex:0 0 auto
+/* The line only lines up when all four sit on one row (desktop) */
+@media (max-width: 1080px) {
+  .pipeline.four::before {
+    display: none;
+  }
 }
 
-.menu-toggle{
-  display:none;
-  width:44px;
-  height:44px;
-  flex:0 0 auto;
-  border-radius:12px;
-  border:1px solid var(--line-strong);
-  background:#fff;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:5px;
-  cursor:pointer;
-  padding:0
+/* Mobile: tighter padding for the 2 x 2 grid */
+@media (max-width: 640px) {
+  .pipeline.four {
+    gap: 40px 24px;
+    padding: 40px 28px 48px;
+  }
 }
 
-.menu-toggle span{
-  display:block;
-  width:20px;
-  height:2px;
-  border-radius:2px;
-  background:var(--navy);
-  transition:transform .22s ease,opacity .22s ease
+.phase {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  text-align: left;
+  position: relative;
 }
 
-.menu-toggle[aria-expanded="true"] span:nth-child(1){
-  transform:translateY(7px) rotate(45deg)
+/* Dot marker sitting on the connecting line */
+.phase::before {
+  content: "";
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--orange);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 8px #fff;
 }
 
-.menu-toggle[aria-expanded="true"] span:nth-child(2){
-  opacity:0
+/* Separate bordered cards (verity-grant coverage section) — no dot marker */
+.phase2 {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px;
 }
 
-.menu-toggle[aria-expanded="true"] span:nth-child(3){
-  transform:translateY(-7px) rotate(-45deg)
+.phase2::before {
+  content: none;
 }
 
-.topbar.scrolled{
-  box-shadow:0 10px 30px rgba(18,40,76,.07)
+.phase strong {
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink, #12284C);
 }
 
-body.nav-locked{
-  overflow:hidden
+.phase span {
+  font-size: 18px;
+  line-height: 1.35;
+  color: var(--muted, #5b6472);
 }
 
-@media (prefers-reduced-motion:reduce){
-html{
-  scroll-behavior:auto
+@media (max-width: 640px) {
+  .phase strong {
+    font-size: 34px;
+  }
 }
 
-[data-reveal]{
-  opacity:1;
-  transform:none;
-  transition:none
+.card,
+.mini,
+.person,
+.platform-card,
+.product-panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px;
+  transition: .18s ease;
+  position: relative;
+  overflow: hidden
 }
 
-}
-
-@media(max-width:1080px){
-.menu-toggle{
-  display:inline-flex
-}
-
-.nav-menu{
-  position:fixed;
-  top:78px;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#fff;
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  gap:0;
-  padding:6px 22px 32px;
-  overflow-y:auto;
-  border-top:1px solid var(--line);
-  transform:translateY(-12px);
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transition:opacity .2s ease,transform .2s ease,visibility 0s .2s;
-  min-height:calc(100svh - 78px)
-}
-
-.nav-menu.is-open{
-  opacity:1;
-  transform:translateY(0);
-  visibility:visible;
-  pointer-events:auto;
-  transition:opacity .2s ease,transform .2s ease
-}
-
-.nav-menu > a{
-  padding:18px 2px;
-  border-bottom:1px solid var(--line);
-  font-size:15px
-}
-
-.dropdown{
-  padding:0;
-  border-bottom:1px solid var(--line)
-}
-
-.dropdown > a{
-  display:block;
-  padding:18px 2px 12px;
-  font-size:15px
-}
-
-.dropdown-panel{
-  position:static;
-  opacity:1;
-  visibility:visible;
-  transform:none;
-  box-shadow:none;
-  border:0;
-  border-radius:0;
-  background:none;
-  padding:0 0 10px 6px;
-  min-width:0
-}
-
-.dropdown-panel a{
-  padding:11px 10px 11px 14px;
-  color:var(--slate);
-  font-size:14px;
-}
-
-.federal-tag{
-  padding:18px 2px;
-  border-bottom:1px solid var(--line)
-}
-
-.hero .page,.section-head,.two,.footer-grid{
-  grid-template-columns:1fr
-}
-
-.visual{
-  min-height:420px
-}
-
-.cards,.three,.four{
-  grid-template-columns:repeat(2,1fr)
-}
-
-.stats,.credential-strip,.product-spotlight{
-  grid-template-columns:repeat(2,1fr)
-}
-
-.pipeline{
-  grid-template-columns:repeat(3,1fr)
-}
-
-.pipeline.four{
-  grid-template-columns:repeat(2,1fr)
-}
-.page-two{
-padding:22px;
-display:flex;
-flex-direction:column;
-}
-}
-
-.self-end{
-  align-self:end
-}
-
-.btn-outline-inverse{
-  background:transparent;
-  color:#fff;
-  border-color:rgba(255,255,255,.3)
-}
-
-.hero-divider{
-  border-bottom:1px solid var(--line)
-}
-
-.link-inherit{
-  color:inherit;
-  text-decoration:underline
-}
-
-.text-navy{
-  color:var(--navy)
-}
-
-.graphic-center{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  inset:0
-}
-
-.form-grid{
-  display:grid;
-  gap:18px;
-  margin-top:30px
-}
-
-.statement-size{
-  font-size:clamp(20px,2.4vw,26px)
-}
-
-.h2-band-size{
-  font-size:clamp(28px,3.4vw,42px)
-}
-
-.h1-hero-size{
-  font-size:clamp(38px,4.6vw,64px)
-}
-
-.actions-center{
-  justify-content:center
-}
-
-.eyebrow-inverse{
-  justify-content:center;
-  color:rgba(255,255,255,.7)
-}
-
-.mt-16{margin-top:16px}
-.mt-22{margin-top:22px}
-.mt-28{margin-top:28px}
-.mb-8{margin-bottom:8px}
-.mb-16{margin-bottom:16px}
-.mb-18{margin-bottom:18px}
-.mb-20{margin-bottom:20px}
-.mb-22{margin-bottom:22px}
-.mb-24{margin-bottom:24px}
-.mb-56{margin-bottom:56px}
-.m-0{margin:0}
-.max-w-760{max-width:760px}
-.pb-0{padding-bottom:0}
-
-.visual-min-h{
-  min-height:260px
-}
-
-.watermark-faint{
-  opacity:.08
-}
-
-.hero-pad{
-  padding:28px 0 64px
-}
-
-.visually-hidden-abs{
-  position:absolute;
-  left:-9999px
-}
-
-.icon-orange-lg{
-  width:120px;
-  height:120px;
-  color:var(--orange)
-}
-
-.icon-gold-md{
-  width:52px;
-  height:52px;
-  color:var(--gold);
-  margin-bottom:18px
-}
-
-@media(max-width:720px){
-  .hero .page {
-display:block;
-}
-.visual{
+.graphic svg {
+  width: 100%;
+  max-width: 380px;
+  /* or whatever width you want */
+  height: auto;
+  /* keeps aspect ratio locked to the viewBox (260:480) */
+  display: block;
+  margin: 0 auto;
+  /* centers it if the container is wider */
   margin-top: 30px;
-}
-.page,.nav{
-  width:min(var(--max),calc(100vw - 30px))
+  /* optional, adds some space above the graphic */
 }
 
-.nav{
-  height:68px
+.graphic2 svg {
+  width: 100%;
+  max-width: 380px;
+  /* or whatever width you want */
+  height: auto;
+  /* keeps aspect ratio locked to the viewBox (260:480) */
+  display: block;
+  margin: 0 auto;
+  /* centers it if the container is wider */
+  margin-top: 0px;
+  /* optional, adds some space above the graphic */
 }
 
-.nav-menu{
-  top:68px
-}
-
-.logo{
-  width:126px
-}
-
-.menu-toggle{
-  width:40px;
-  height:40px
-}
-
-.topbar{
-  position:sticky
-}
-
-.hero .page{
-  min-height:auto;
-  padding:58px 0 72px
-}
-
-h1{
-  font-size:clamp(44px,13vw,70px)
-}
-
-.hero-copy{
-  font-size:17px
-}
-
-.cards,.three,.four,.stats,.credential-strip,.product-spotlight,.pipeline,.pipeline.four{
-  grid-template-columns:1fr
-}
-
-.footer-grid{
-  gap:22px
-}
-
-.actions .btn{
-  width:100%
-}
-
-.credential-strip{
-  margin-top:0;
-  padding-top:20px
-}
-.stats{
-  grid-template-columns:1fr 1fr
-}
-.stat strong{
-  font-size:30px;
-}
-.page-two{
-padding:22px;
-display:flex;
-flex-direction:column;
-}
-
-.three{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  gap:35px;
-  width:100%;
+.graphic1 svg {
+  width: 100%;
+  max-width: 180px;
+  /* or whatever width you want */
+  height: auto;
+  /* keeps aspect ratio locked to the viewBox (260:480) */
+  display: block;
+  margin: 0 auto;
+  /* centers it if the container is wider */
+  margin-top: 20px;
+  /* optional, adds some space above the graphic */
 
 }
 
+.card:hover,
+.platform-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 70px rgba(18, 40, 76, .10);
+  border-color: rgba(237, 76, 44, .25)
 }
 
+.card .icon,
+.mini .icon,
+.phase .icon {
+  color: var(--orange);
+  width: var(--icon);
+  height: var(--icon);
+  background: linear-gradient(155deg, rgba(237, 76, 44, .12), rgba(237, 76, 44, .05));
+  border-radius: 50%;
+  padding: 10px
+}
+
+.card .icon svg,
+.mini .icon svg,
+.phase .icon svg {
+  stroke-width: 1.7
+}
+
+/* Illustrated PNG icons: no tinted circle, artwork carries its own accent */
+.icon.icon-img {
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  width: var(--icon);
+  height: var(--icon)
+}
+
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block
+}
+
+.card h3,
+.mini h3,
+.phase h3,
+.person h3,
+.platform-card h3 {
+  font-size: 21px;
+  line-height: 1.15;
+  letter-spacing: -.025em;
+  color: var(--navy);
+  margin-bottom: 10px
+}
+
+.card p,
+.mini p,
+.phase p,
+.person p,
+.platform-card p {
+  color: var(--slate);
+  font-size: 15px;
+  line-height: 1.58;
+  margin: 0
+}
+
+.learn {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--orange);
+  font-size: 13px;
+  font-weight: 760
+}
+
+.product-spotlight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px
+}
+
+.product-spotlight.single {
+  grid-template-columns: 1fr
+}
+
+.product-panel {
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between
+}
+
+.product-panel.gold {
+  background: linear-gradient(135deg, #fff, #FBF7EC)
+}
+
+.product-panel.teal {
+  background: linear-gradient(135deg, #fff, #EEF8F7)
+}
+
+.product-panel .icon {
+  width: var(--icon);
+  height: var(--icon);
+  color: var(--orange)
+}
+
+.product-panel h3 {
+  font-family: var(--serif);
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: -.015em;
+  color: var(--navy);
+  font-weight: 500;
+  margin: 0 0 12px
+}
+
+.product-panel p {
+  color: var(--slate);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 530px
+}
+
+.band {
+  border-radius: 34px;
+  background: var(--navy);
+  color: #fff;
+  padding: clamp(36px, 6vw, 68px);
+  position: relative;
+  overflow: hidden
+}
+
+.band:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 16px 16px, rgba(255, 255, 255, .14) 1.2px, transparent 1.2px);
+  background-size: 30px 30px;
+  opacity: .22
+}
+
+.band>* {
+  position: relative;
+  z-index: 2
+}
+
+.band h2 {
+  color: #fff
+}
+
+.band-h2-tight {
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.25
+}
+
+.band p {
+  color: rgba(255, 255, 255, .76)
+}
+
+.same-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.same-row .label {
+  color: var(--gold);
+
+}
+
+.federal-band-logo {
+  height: 44px;
+  width: auto;
+  display: block;
+  margin-bottom: 16px
+}
+
+.two {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: centre;
+}
+
+.two>* {
+  flex: 1 1 320px
+}
+
+.mission-vision .label {
+  margin-bottom: 20px
+}
+
+.three {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 22px;
+  width: 100%;
+}
+
+.four {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px
+}
+
+.mini {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 18px;
+  align-items: start
+}
+
+.retained-split {
+  background: #fff
+}
+
+.retained-grid {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 48px;
+  align-items: stretch
+}
+
+.retained-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 6px
+}
+
+.retained-card {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 28px;
+  padding: clamp(30px, 4vw, 40px);
+  box-shadow: 0 24px 70px rgba(18, 40, 76, .18)
+}
+
+.retained-card .eyebrow {
+  color: var(--gold)
+}
+
+/* The global h1 leading of .94 is set for very large display type; at this
+   card's size three tight lines read as congested, so it gets more air. */
+.retained-card h1 {
+  color: #fff;
+  font-size: clamp(30px, 3.4vw, 40px);
+  line-height: 1.18
+}
+
+.retained-card .hero-copy {
+  color: rgba(255, 255, 255, .76)
+}
+
+.retained-content h2 {
+  margin-bottom: 14px
+}
+
+.retained-content .lead {
+  margin-bottom: 32px
+}
+
+.retained-content .four {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 6px
+}
+
+.retained-content .mini {
+  padding: 26px;
+  align-items: start
+}
+
+.retained-content .mini h4 {
+  color: var(--navy);
+  font-size: 16px;
+  margin: 0 0 8px
+}
+
+.retained-content .mini p {
+  color: var(--slate);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  text-wrap: pretty
+}
+
+.check-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 32px;
+  margin-top: 24px
+}
+
+.check-grid .mini h3 {
+  font-size: 17px;
+  margin-bottom: 0
+}
+
+.mini .icon {
+  margin: 0;
+  width: var(--icon);
+  height: var(--icon)
+}
+
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px
+}
+
+.pipeline.four {
+  grid-template-columns: repeat(4, 1fr)
+}
+
+/* Column so the copy sits at the top and the step number is pushed to the
+   bottom, with the same padding above the heading as below the number. */
+.step {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px;
+  /* No min-height: a fixed one left a different amount of slack in every card
+     depending on how long its text ran, so the gap above the number varied from
+     card to card. Height now comes from the content, and the grid still
+     stretches every card in a row to match the tallest. */
+  display: flex;
+  flex-direction: column
+}
+
+/* Last in the visual order but kept first in the markup, where the number
+   belongs when the card is read aloud. */
+.step b {
+  order: 3;
+  display: block;
+  margin-top: auto;
+  padding-top: 16px;
+  color: var(--orange);
+  font-size: 12px;
+  letter-spacing: .14em
+}
+
+.step h3 {
+  order: 1
+}
+
+.step p {
+  order: 2
+}
+
+.step h3 {
+  font-size: 17px;
+  line-height: 1.2;
+  color: var(--navy);
+  letter-spacing: -.02em;
+  margin-bottom: 8px
+}
+
+.step p {
+  color: var(--slate);
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin: 0
+}
+
+/* Process pipelines run as a serpentine: the top row reads left to right, turns
+   down at its end, and the bottom row reads back right to left. Three per row
+   gives the steps room to breathe and keeps the turn on screen. Scoped away
+   from .pipeline.four, which has its own dotted-timeline treatment. */
+.pipeline:not(.four) {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 64px 72px
+}
+
+/* The second row is laid out in reverse so it reads right to left, matching the
+   direction its arrows point. Source order stays 01..06 for screen readers. */
+.pipeline:not(.four) .step:nth-child(4) {
+  grid-column: 3;
+  grid-row: 2
+}
+
+.pipeline:not(.four) .step:nth-child(5) {
+  grid-column: 2;
+  grid-row: 2
+}
+
+.pipeline:not(.four) .step:nth-child(6) {
+  grid-column: 1;
+  grid-row: 2
+}
+
+.pipeline:not(.four) .step {
+  position: relative
+}
+
+/* Bare arrow sitting in the gap — no badge, no circle. The wider viewBox gives
+   the shaft more length ahead of the head. */
+.pipeline:not(.four) .step::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 44px;
+  height: 26px;
+  background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24' fill='none' stroke='%23ED4C2C' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12h32M28 6l6 6-6 6'/%3E%3C/svg%3E")
+}
+
+/* Outbound leg: arrow sits in the column gap to the right. */
+.pipeline:not(.four) .step:nth-child(1)::after,
+.pipeline:not(.four) .step:nth-child(2)::after {
+  top: 50%;
+  left: calc(100% + 36px);
+  transform: translate(-50%, -50%)
+}
+
+/* The turn: below the last step of row one, pointing down into row two. */
+.pipeline:not(.four) .step:nth-child(3)::after {
+  top: calc(100% + 32px);
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg)
+}
+
+/* Return leg: arrow sits in the gap to the left, pointing back the way the row
+   reads. */
+.pipeline:not(.four) .step:nth-child(4)::after,
+.pipeline:not(.four) .step:nth-child(5)::after {
+  top: 50%;
+  left: -36px;
+  transform: translate(-50%, -50%) rotate(180deg)
+}
+
+/* Last step ends the sequence. */
+.pipeline:not(.four) .step:nth-child(6)::after,
+.pipeline:not(.four) .step:last-child::after {
+  display: none
+}
+
+.monogram {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 23px;
+  font-weight: 600;
+  background: var(--navy);
+  color: #fff;
+  flex: 0 0 auto
+}
+
+.monogram.orange {
+  background: var(--orange)
+}
+
+.monogram.gold {
+  background: var(--gold);
+  color: var(--navy-2)
+}
+
+.monogram.lg {
+  width: 118px;
+  height: 118px;
+  font-size: 42px
+}
+
+.person-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%
+}
+
+.person-photo-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%
+}
+
+.person-photo {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 18px
+}
+
+.person-photo-card .role {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 14px
+}
+
+.person-photo-card h3 {
+  margin-bottom: 4px
+}
+
+.awards-card {
+  margin-top: 32px
+}
+
+.awards-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px
+}
+
+.award-tile {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  height: 110px;
+  box-shadow: 0 8px 20px rgba(18, 40, 76, .06);
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.award-tile img {
+  height: 100%;
+  max-height: 60px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain
+}
+
+.shyam-card {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) 1fr;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 50px rgba(18, 40, 76, .08)
+}
+
+.shyam-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  display: block
+}
+
+.shyam-content {
+  padding: clamp(28px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+}
+
+.shyam-content h3 {
+  font-family: var(--serif);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 10px
+}
+
+.shyam-content .role {
+  color: var(--orange);
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 22px
+}
+
+.shyam-content p {
+  color: var(--slate);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0
+}
+
+.person-card .role {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  display: block
+}
+
+.person-card h3 {
+  margin-bottom: 2px
+}
+
+.person-card.is-open {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  background: var(--soft-2)
+}
+
+.person-card.is-open .monogram {
+  background: #fff;
+  border: 1.5px dashed var(--line-strong);
+  color: var(--muted)
+}
+
+.founder-feature {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 38px;
+  align-items: start
+}
+
+.founder-feature .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px
+}
+
+.founder-feature .tag {
+  background: var(--soft);
+  color: var(--navy);
+  font-size: 12.5px;
+  font-weight: 650;
+  padding: 7px 14px;
+  border-radius: 999px
+}
+
+@media(max-width:640px) {
+  .founder-feature {
+    grid-template-columns: 1fr;
+    text-align: left
+  }
+}
+
+.timeline-wrap {
+  padding: 36px 0 6px
+}
+
+.timeline-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block
+}
+
+.callout {
+  background: var(--soft-2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(30px, 5vw, 40px);
+  width: 100%;
+
+}
+
+.callout-tight {
+  padding: 16px 16px 16px 4px;
+}
+
+.check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 32px
+}
+
+.check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: var(--navy);
+  font-size: 16px;
+  line-height: 1.55
+}
+
+.check-list li strong {
+  display: block;
+  color: var(--navy);
+  margin-bottom: 4px
+}
+
+.check-list li p {
+  margin: 0;
+  color: var(--slate);
+  font-size: 15.5px;
+  line-height: 1.55
+}
+
+.check-list li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: var(--orange)
+}
+
+.statement {
+  font-family: var(--serif);
+  color: var(--navy);
+  font-size: clamp(28px, 3.8vw, 48px);
+  line-height: 1.14;
+  letter-spacing: -.018em
+}
+
+.statement-block {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(70px, 10vw, 110px) 0
+}
+
+.statement-block .page {
+  position: relative;
+  z-index: 1;
+  max-width: 920px
+}
+
+.statement-block .statement {
+  max-width: 820px
+}
+
+/* Statement section runs as one row: the narrative on the left, the "larger
+   questions" and their rotating card on the right. */
+.statement-split {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center
+}
+
+.statement-split .lead {
+  max-width: none
+}
+
+/* Rotating question card. All five questions are stacked in one box and flip
+   through one at a time, so the section keeps its height no matter which is
+   showing. */
+.flip-stack {
+  perspective: 1400px;
+  margin-top: 18px
+}
+
+.flip-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 178px
+}
+
+.flip-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 30px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 18px 46px rgba(18, 40, 76, .10);
+  color: var(--navy);
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -.015em;
+  /* Hinge on the top edge so cards tip away upward and the next one drops in. */
+  transform-origin: 50% 0;
+  transform: rotateX(-92deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .62s cubic-bezier(.2, .72, .28, 1), opacity .34s ease
+}
+
+.flip-item.is-active {
+  transform: rotateX(0);
+  opacity: 1;
+  pointer-events: auto
+}
+
+.flip-item.is-leaving {
+  transform: rotateX(92deg);
+  opacity: 0
+}
+
+.flip-num {
+  display: block;
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .14em
+}
+
+.flip-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px
+}
+
+.flip-dot {
+  width: 26px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line-strong);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background .3s ease
+}
+
+.flip-dot.is-on {
+  background: var(--orange)
+}
+
+/* Without motion the flip reads as content vanishing, so the questions fall
+   back to a plain stacked list with everything visible at once. */
+@media (prefers-reduced-motion: reduce) {
+  .flip-list {
+    min-height: 0;
+    display: grid;
+    gap: 12px
+  }
+
+  .flip-item {
+    position: static;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    transition: none
+  }
+
+  .flip-dots {
+    display: none
+  }
+}
+
+/* One column once the pair would be too narrow to read comfortably. */
+@media (max-width: 900px) {
+  .statement-split {
+    grid-template-columns: 1fr
+  }
+}
+
+.lattice-watermark {
+  position: absolute;
+  inset: 0;
+  opacity: .05;
+  pointer-events: none
+}
+
+.lattice-watermark svg {
+  width: 100%;
+  height: 100%
+}
+
+.bullets {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none
+}
+
+.bullets li {
+  padding-left: 22px;
+  position: relative;
+  color: var(--slate);
+  line-height: 1.58
+}
+
+.bullets li:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .7em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange)
+}
+
+.footer {
+  background: var(--navy-2);
+  color: #fff;
+  padding: 56px 0
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.2fr;
+  gap: 34px
+}
+
+.footer-logo {
+  width: 150px;
+  margin-bottom: 18px
+}
+
+.footer h4 {
+  margin: 0 0 14px;
+  color: #fff;
+  font-size: 14px
+}
+
+.footer a,
+.footer p {
+  display: block;
+  color: rgba(255, 255, 255, .68);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0
+}
+
+.footer a:hover {
+  color: #fff
+}
+
+.hero.small .page {
+  min-height: 420px;
+  grid-template-columns: 1fr;
+  padding: 86px 0
+}
+
+.hero.small h1 {
+  font-size: clamp(48px, 6vw, 86px);
+  max-width: 980px
+}
+
+.hero.small.split .page {
+  min-height: auto;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 56px;
+  padding: 72px 0
+}
+
+.hero.small.split h1 {
+  max-width: 640px;
+  font-size: clamp(34px, 4vw, 52px)
+}
+
+.visual.side {
+  min-height: 380px;
+  align-items: center;
+}
+
+/* Square panel: the column is a fixed 470px, so aspect-ratio locks the height
+   to match it rather than the 380px floor the other side panels use. */
+.visual.side.visual-square {
+  min-height: 0;
+  aspect-ratio: 1
+}
+
+/* Once the hero stacks, the panel spans the full page width and a 1:1 ratio
+   would make it as tall as it is wide. Cap and centre it instead. */
+@media (max-width: 1080px) {
+  /* width:100% is required — the panel's only child is absolutely positioned,
+     so without it the auto margins collapse the box to its border. */
+  .visual.side.visual-square {
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto
+  }
+}
+
+.visual.side .graphic {
+  position: absolute;
+  inset: 36px
+}
+
+.hero.navy {
+  background: var(--navy);
+  border-bottom: 0
+}
+
+.hero.navy .eyebrow {
+  color: var(--gold)
+}
+
+.hero.navy h1 {
+  color: #fff
+}
+
+.hero.navy .hero-copy {
+  color: rgba(255, 255, 255, .76)
+}
+
+.hero.navy .visual {
+  background: rgba(255, 255, 255, .05);
+  border-color: rgba(255, 255, 255, .14);
+  box-shadow: none
+}
+
+.hero.navy.teal .eyebrow {
+  color: #6FC7BB
+}
+
+.hero-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px
+}
+
+.hero-tile {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 26px;
+  display: flex;
+  align-items: center;
+  gap: 16px
+}
+
+.hero-tile .icon {
+  width: var(--icon);
+  height: var(--icon);
+  color: var(--orange);
+  flex: 0 0 auto
+}
+
+.hero-tile strong {
+  display: block;
+  color: var(--navy);
+  font-size: 16px;
+  margin-bottom: 3px
+}
+
+.hero-tile span {
+  display: block;
+  color: var(--slate);
+  font-size: 13.5px;
+  line-height: 1.5
+}
+
+.note {
+  font-size: 13px;
+  color: var(--muted)
+}
+
+/* Spacing is carried by the children rather than a uniform gap: a flat 14px gap
+   plus the label's own margin put each label 21px from its input but only 14px
+   from the field above, so labels read as belonging to the wrong field. */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+/* Space between field groups — the label stays tight to the input it names. */
+.input + .field-label {
+  margin-top: 20px
+}
+
+.input + .form-submit {
+  margin-top: 26px
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--navy);
+  margin-bottom: 7px
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color .18s ease, box-shadow .18s ease
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 4px rgba(18, 40, 76, .09)
+}
+
+/* Absorbs the column's leftover height so the submit button lands level with
+   the details card's bottom edge instead of floating above it. */
+textarea.input {
+  min-height: 150px;
+  flex: 1 1 auto;
+  resize: vertical
+}
+
+.form-submit {
+  border: 0;
+  cursor: pointer;
+  font: inherit
+}
+
+.form-status {
+  min-height: 22px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600
+}
+
+/* Before submit there is no message, so claim no space — otherwise the button
+   would sit short of the card's bottom. Margins are zeroed too: the global `p`
+   rule's bottom margin still applies at zero height. It reserves its space
+   again as soon as script.js writes a result into it. */
+.form-status:empty {
+  min-height: 0;
+  margin: 0
+}
+
+.form-status.is-error {
+  color: #B3261E
+}
+
+.form-status.is-success {
+  color: #1E7A4C
+}
+
+.holding {
+  position: relative;
+  overflow: hidden;
+  min-height: 100svh;
+  background: var(--navy);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  text-align: center
+}
+
+.holding .page {
+  position: relative;
+  z-index: 1
+}
+
+.holding .actions {
+  flex-wrap: nowrap;
+  align-items: center
+}
+
+.holding .actions .btn {
+  width: auto;
+  white-space: nowrap
+}
+
+.holding .actions .btn-outline-inverse {
+  padding: 0 44px
+}
+
+.holding img {
+  width: 190px;
+  margin: 0 auto 50px
+}
+
+.icon-envelope {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px
+}
+
+.holding img.federal-logo-inline {
+  height: 28px;
+  width: auto;
+  max-width: none;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+  margin: -5px 0 0
+}
+
+.holding h1 {
+  color: #fff;
+  font-size: clamp(48px, 7vw, 90px)
+}
+
+.holding img.federal-logo-heading {
+  height: clamp(84px, 12vw, 150px);
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+  margin: -20px 10px 0 0
+}
+
+.holding p {
+  color: rgba(255, 255, 255, .75);
+  font-size: 18px;
+  max-width: 640px;
+  margin: 0 auto 28px;
+  line-height: 1.6
+}
+
+/* Content rises into place as it enters the viewport. The longer travel and
+   decelerating curve give the lift a settle at the end rather than a linear
+   slide; children of card rows are staggered from script.js. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(38px);
+  transition: opacity .7s ease, transform .9s cubic-bezier(.16, .84, .34, 1)
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0)
+}
+
+/* Card rows lift their own children so the sweep is visible within the row,
+   not just on the row as a whole. */
+[data-reveal] .cards > *,
+[data-reveal] .stats > *,
+[data-reveal] .pipeline > *,
+[data-reveal] .credential-strip > *,
+[data-reveal] .bullets > *,
+[data-reveal] .three > *,
+[data-reveal] .four > *,
+[data-reveal] .form-grid > *,
+[data-reveal].cards > *,
+[data-reveal].stats > *,
+[data-reveal].pipeline > *,
+[data-reveal].credential-strip > *,
+[data-reveal].bullets > *,
+[data-reveal].three > *,
+[data-reveal].four > *,
+[data-reveal].form-grid > * {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .6s ease, transform .75s cubic-bezier(.16, .84, .34, 1)
+}
+
+[data-reveal].is-visible .cards > *,
+[data-reveal].is-visible .stats > *,
+[data-reveal].is-visible .pipeline > *,
+[data-reveal].is-visible .credential-strip > *,
+[data-reveal].is-visible .bullets > *,
+[data-reveal].is-visible .three > *,
+[data-reveal].is-visible .four > *,
+[data-reveal].is-visible .form-grid > *,
+[data-reveal].is-visible.cards > *,
+[data-reveal].is-visible.stats > *,
+[data-reveal].is-visible.pipeline > *,
+[data-reveal].is-visible.credential-strip > *,
+[data-reveal].is-visible.bullets > *,
+[data-reveal].is-visible.three > *,
+[data-reveal].is-visible.four > *,
+[data-reveal].is-visible.form-grid > * {
+  opacity: 1;
+  transform: translateY(0)
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto
+}
+
+.menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 0
+}
+
+.menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--navy);
+  transition: transform .22s ease, opacity .22s ease
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg)
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg)
+}
+
+.topbar.scrolled {
+  box-shadow: 0 10px 30px rgba(18, 40, 76, .07)
+}
+
+body.nav-locked {
+  overflow: hidden
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior: auto
+  }
+
+  [data-reveal],
+  [data-reveal] .cards > *,
+  [data-reveal] .stats > *,
+  [data-reveal] .pipeline > *,
+  [data-reveal] .credential-strip > *,
+  [data-reveal].cards > *,
+  [data-reveal].stats > *,
+  [data-reveal].pipeline > *,
+  [data-reveal].credential-strip > * {
+    opacity: 1;
+    transform: none;
+    transition: none
+  }
+
+}
+
+@media(max-width:1080px) {
+  .menu-toggle {
+    display: inline-flex
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 78px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 6px 22px 32px;
+    overflow-y: auto;
+    border-top: 1px solid var(--line);
+    transform: translateY(-12px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease, visibility 0s .2s;
+    min-height: 100dvh
+  }
+
+  .nav-menu.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity .2s ease, transform .2s ease
+  }
+
+  .nav-menu>a {
+    padding: 18px 2px;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px
+  }
+
+  .dropdown {
+    padding: 0;
+    border-bottom: 1px solid var(--line)
+  }
+
+  .dropdown>a {
+    display: block;
+    padding: 18px 2px 12px;
+    font-size: 15px
+  }
+
+  .dropdown-panel {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    padding: 0 0 10px 6px;
+    min-width: 0
+  }
+
+  /* 14px vertical puts these at 45px tall, clearing the 44px touch-target
+     guideline — they were 39px, which is a small target on a phone. */
+  .dropdown-panel a {
+    padding: 14px 10px 14px 14px;
+    color: var(--slate);
+    font-size: 14px;
+  }
+
+  .federal-tag {
+    padding: 18px 2px;
+    border-bottom: 1px solid var(--line)
+  }
+
+  /* Nav action buttons relocated into the hamburger menu */
+  .nav-menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 22px
+  }
+
+  .nav-menu-actions .btn {
+    width: 100%;
+    height: 50px
+  }
+
+  .nav-menu-actions .federal-btn {
+    order: 1
+  }
+
+  .nav-menu-actions .btn-primary {
+    order: 2
+  }
+
+  .hero .page,
+  .section-head,
+  .indent-right,
+  .two,
+  .footer-grid,
+  .retained-grid {
+    grid-template-columns: 1fr
+  }
+
+  /* `.hero.small.split .page` outranks `.hero .page` above, so it kept its
+     fixed 400px column here — restate it at equal specificity so it stacks */
+  .hero.small.split .page {
+    grid-template-columns: 1fr;
+    gap: 40px
+  }
+
+  .section-head.align-left,
+  .section-head.equal,
+  .section-head.keep-split,
+  .section-head:not(.align-left):not(.equal):not(.keep-split):has(>div:first-child:empty),
+  .section-head:not(.align-left):not(.equal):not(.keep-split):not(:has(>div:first-child:empty)) {
+    grid-template-columns: 1fr !important
+  }
+
+  .section-head>div:first-child,
+  .section-head>div:last-child {
+    order: initial !important
+  }
+
+  .team-lead-shift {
+    margin-left: 0
+  }
+
+  .shyam-card {
+    grid-template-columns: 1fr
+  }
+
+  .retained-content .four {
+    grid-template-columns: repeat(2, 1fr)
+  }
+
+  .visual {
+    min-height: 420px
+  }
+
+  .cards,
+  .cards.cols-2,
+  .cards.cols-4,
+  .three,
+  .four {
+    grid-template-columns: repeat(2, 1fr)
+  }
+
+  .stats,
+  .stats.cols-4,
+  .product-spotlight {
+    grid-template-columns: repeat(2, 1fr)
+  }
+
+  /* Credential cards share one treatment from tablet down: two per row,
+     grid-auto-rows keeping every card identical in size */
+  .credential-strip,
+  .credential-strip.cols-5 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 10px
+  }
+
+  .credential {
+    gap: 8px;
+    padding: 16px 12px;
+    min-height: 104px
+  }
+
+  .credential.logo-card {
+    padding: 14px 12px
+  }
+
+  .credential .icon {
+    width: var(--icon);
+    height: var(--icon);
+    padding: 10px
+  }
+
+  /* The 25-years badge and its label are given the same basis and shrink
+     factor, so they stay equal in width at every size and the pair centres as a
+     unit. Basis is capped rather than 1 1 0 (a true half) because on a wide
+     tablet card half would blow the badge up to ~160px. aspect-ratio keeps the
+     badge square at whatever width it settles on. Scoped to the image badge —
+     the svg icons keep their fixed circle. */
+  .credential .icon.icon-img {
+    flex: 0 0 var(--icon);
+    width: var(--icon);
+    height: var(--icon);
+    aspect-ratio: 1;
+    padding: 0
+  }
+
+  .credential .icon.icon-img + strong {
+    flex: 0 1 auto;
+    min-width: 0
+  }
+
+  .credential-logo {
+    max-height: 54px
+  }
+
+  /* An odd card out would sit alone against the left edge — centre it at the
+     same width as the rest rather than stretching it across both columns */
+  .credential-strip > .credential:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc(50% - 5px);
+    justify-self: center
+  }
+
+  .pipeline {
+    grid-template-columns: repeat(2, 1fr)
+  }
+
+  .pipeline.four {
+    grid-template-columns: repeat(2, 1fr)
+  }
+
+  /* Serpentine over two columns: rows run L-R, R-L, L-R across three rows, so
+     the placement and every arrow direction is restated for the new wrap. */
+  .pipeline:not(.four) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 56px 64px
+  }
+
+  .pipeline:not(.four) .step:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2
+  }
+
+  .pipeline:not(.four) .step:nth-child(4) {
+    grid-column: 1;
+    grid-row: 2
+  }
+
+  .pipeline:not(.four) .step:nth-child(5) {
+    grid-column: 1;
+    grid-row: 3
+  }
+
+  .pipeline:not(.four) .step:nth-child(6) {
+    grid-column: 2;
+    grid-row: 3
+  }
+
+  /* Rightward: 01 and 05 hand off to the card beside them. */
+  .pipeline:not(.four) .step:nth-child(1)::after,
+  .pipeline:not(.four) .step:nth-child(5)::after {
+    top: 50%;
+    left: calc(100% + 32px);
+    transform: translate(-50%, -50%)
+  }
+
+  /* The two turns, at the end of rows one and two. */
+  .pipeline:not(.four) .step:nth-child(2)::after,
+  .pipeline:not(.four) .step:nth-child(4)::after {
+    top: calc(100% + 28px);
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg)
+  }
+
+  /* Leftward: the return row. */
+  .pipeline:not(.four) .step:nth-child(3)::after {
+    top: 50%;
+    left: -32px;
+    transform: translate(-50%, -50%) rotate(180deg)
+  }
+
+  /* .three is a flex row, so grid rules above don't apply — stack it */
+  .three {
+    flex-direction: column
+  }
+
+  /* CTA buttons: side by side, sharing the row equally */
+  .actions {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch
+  }
+
+  .actions .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    height: auto;
+    min-height: 46px;
+    padding: 10px 14px;
+    text-align: center
+  }
+
+  /* Guard against any child forcing horizontal overflow / cropped text */
+  .card,
+  .mini,
+  .step,
+  .platform-card {
+    min-width: 0
+  }
+
+  .step h3,
+  .step p,
+  .mini h3,
+  .mini p,
+  .card h3,
+  .card p {
+    overflow-wrap: break-word
+  }
+
+  /* No heading or description should orphan a single word on mobile/tablet */
+  p {
+    text-wrap: pretty
+  }
+
+  h3 {
+    text-wrap: balance
+  }
+
+  /* Stack the form above the details. No padding: the container now carries
+     `.page`'s width, so any inset here would push it off the nav/footer edge. */
+  .page-two {
+    display: flex;
+    flex-direction: column;
+    gap: 28px
+  }
+}
+
+.self-end {
+  align-self: end
+}
+
+.btn-outline-inverse {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, .3)
+}
+
+.hero-divider {
+  border-bottom: 1px solid var(--line)
+}
+
+.link-inherit {
+  color: inherit;
+  text-decoration: underline
+}
+
+.text-navy {
+  color: var(--navy)
+}
+
+/* Hero illustrations. They replace the inline SVGs that used to sit in these
+   wrappers, so they inherit the same job: fill the panel without overflowing it
+   and stay centred whatever the panel's aspect ratio works out to. */
+.hero-illustration {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block
+}
+
+.graphic-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0
+}
+
+.form-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 30px
+}
+
+/* Contact page: the intro and the form are one section rather than a hero plus
+   a second section, so there's no divider rule between them and no doubled
+   padding where they met. Padding is tied to viewport height so the whole
+   section lands inside the first screen and scrolling only brings up the
+   footer. */
+.contact-page {
+  border-bottom: 0;
+  padding: clamp(30px, 7vh, 78px) 0
+}
+
+.contact-intro {
+  margin-bottom: clamp(22px, 3vh, 30px)
+}
+
+/* Tighter than the global h1 spacing so the line sits closer to the heading
+   without crowding it. */
+.contact-intro h1 {
+  margin-bottom: 14px
+}
+
+/* The callout leads with the form-grid now that its heading is gone, so the
+   grid's top margin would just add slack inside the card. */
+.callout > .form-grid:first-child {
+  margin-top: 0
+}
+
+/* Contact details keep the tinted circle. Padding is a little tighter than the
+   default so the glyph stays large inside it rather than shrinking away. */
+.callout .mini .icon {
+  padding: 11px
+}
+
+/* The LinkedIn badge is a solid blue square, so it gets a matching blue-tinted
+   circle instead of the orange one the other two sit on. */
+.mini .icon.icon-linkedin {
+  background: linear-gradient(155deg, rgba(10, 102, 194, .14), rgba(10, 102, 194, .05))
+}
+
+/* Short viewports: the section still has to land inside the first screen, so
+   the form and the details card give up their most compressible space rather
+   than letting the page spill past the fold. */
+@media (max-height: 860px) {
+  .contact-page textarea.input {
+    min-height: 96px
+  }
+
+  .contact-page .input + .field-label {
+    margin-top: 14px
+  }
+
+  .contact-page .input + .form-submit {
+    margin-top: 18px
+  }
+
+  .contact-page .callout {
+    padding: 30px
+  }
+
+  .contact-page .callout .mini {
+    padding: 22px
+  }
+
+  .contact-page .form-grid {
+    gap: 14px
+  }
+}
+
+/* Shorter still: the 7vh padding is no longer small enough on its own, so it
+   goes flat and the textarea gives up its last compressible height. */
+@media (max-height: 760px) {
+  .contact-page {
+    padding: 24px 0
+  }
+
+  .contact-intro {
+    margin-bottom: 20px
+  }
+
+  .contact-page textarea.input {
+    min-height: 80px
+  }
+}
+
+/* Brand marks and solid icons are filled shapes, not stroked line icons, so
+   they opt out of the global stroke styling. */
+.icon svg.brand-glyph,
+.icon svg.solid-glyph {
+  fill: currentColor;
+  stroke: none
+}
+
+/* Beats the `.mini .icon` orange further up, so the mark keeps LinkedIn blue. */
+.mini .icon.icon-linkedin {
+  color: #0A66C2
+}
+
+.statement-size {
+  font-size: clamp(20px, 2.4vw, 26px)
+}
+
+.h2-band-size {
+  font-size: clamp(28px, 3.4vw, 42px)
+}
+
+.h1-hero-size {
+  font-size: clamp(38px, 4.6vw, 64px)
+}
+
+.actions-center {
+  justify-content: center
+}
+
+.eyebrow-inverse {
+  justify-content: center;
+  color: rgba(255, 255, 255, .7)
+}
+
+.mt-16 {
+  margin-top: 16px
+}
+
+.mt-22 {
+  margin-top: 22px
+}
+
+.mt-28 {
+  margin-top: 28px
+}
+
+.mt-40 {
+  margin-top: 40px
+}
+
+.mb-8 {
+  margin-bottom: 8px
+}
+
+.mb-16 {
+  margin-bottom: 16px
+}
+
+.mb-18 {
+  margin-bottom: 18px
+}
+
+.mb-20 {
+  margin-bottom: 20px
+}
+
+.mb-22 {
+  margin-bottom: 22px
+}
+
+.mb-24 {
+  margin-bottom: 24px
+}
+
+.mb-56 {
+  margin-bottom: 56px
+}
+
+.m-0 {
+  margin: 0
+}
+
+.max-w-760 {
+  max-width: 760px
+}
+
+.pb-0 {
+  padding-bottom: 0
+}
+
+.section.pb-0 {
+  border-bottom: none
+}
+
+.visual-min-h {
+  min-height: 260px
+}
+
+.watermark-faint {
+  opacity: .08
+}
+
+.hero-pad {
+  padding: 28px 0 64px
+}
+
+.visually-hidden-abs {
+  position: absolute;
+  left: -9999px
+}
+
+.icon-orange-lg {
+  width: 120px;
+  height: 120px;
+  color: var(--orange)
+}
+
+.icon-gold-md {
+  width: var(--icon);
+  height: var(--icon);
+  color: var(--gold);
+  margin-bottom: 18px
+}
+
+@media(max-width:720px) {
+  .hero .page {
+    display: block;
+  }
+
+  .visual {
+    margin-top: 30px;
+  }
+
+  .page,
+  .page-two,
+  .nav {
+    width: min(var(--max), calc(100vw - 30px))
+  }
+
+  .nav {
+    height: 68px
+  }
+
+  .video-hero {
+    height: calc(100svh - 68px)
+  }
+
+  .nav-menu {
+    top: 68px
+  }
+
+  .logo {
+    width: 126px
+  }
+
+  .menu-toggle {
+    width: 40px;
+    height: 40px
+  }
+
+  .topbar {
+    position: sticky
+  }
+
+  .breadcrumb {
+    top: 78px;
+    transform: translateX(calc(-1 * min(var(--max), calc(100vw - 30px)) / 2))
+  }
+
+  .hero .page {
+    min-height: auto;
+    padding: 58px 0 72px
+  }
+
+  h1 {
+    font-size: clamp(44px, 13vw, 70px)
+  }
+
+  .hero-copy {
+    font-size: 17px
+  }
+
+  .cards,
+  .cards.cols-2,
+  .cards.cols-4,
+  .three,
+  .four,
+  .stats,
+  .stats.cols-4,
+  .product-spotlight,
+  .check-grid,
+  .check-list,
+  .retained-grid,
+  .pipeline {
+    grid-template-columns: 1fr
+  }
+
+  /* Single column: there's no serpentine left to run, so the explicit placement
+     is dropped and the whole sequence reads straight down. */
+  .pipeline:not(.four) {
+    grid-template-columns: 1fr;
+    gap: 52px
+  }
+
+  .pipeline:not(.four) .step:nth-child(n) {
+    grid-column: auto;
+    grid-row: auto
+  }
+
+  /* :nth-child(n) matches every step but carries the same specificity as the
+     per-step rules in the tablet block above, which would otherwise keep their
+     serpentine directions here. */
+  .pipeline:not(.four) .step:nth-child(n)::after {
+    display: block;
+    top: calc(100% + 26px);
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg)
+  }
+
+  .pipeline:not(.four) .step:last-child::after {
+    display: none
+  }
+
+  .shyam-card {
+    grid-template-columns: 1fr
+  }
+
+  .retained-content .four {
+    grid-template-columns: 1fr
+  }
+
+  .awards-strip {
+    grid-template-columns: repeat(2, 1fr)
+  }
+
+  .footer-grid {
+    gap: 22px
+  }
+
+  .credential-strip {
+    margin-top: 0;
+    padding-top:  24px
+  }
+
+  /* Coming-soon CTAs. Side by side these share the row via `flex: 1 1 0`, but
+     they size as content-box with very different paddings (14px vs 44px), so
+     the shares come out unequal — and with `min-width: 0` the email button gets
+     squeezed under its own text, which then spills outside the pill. Stack them
+     instead: `align-items: stretch` makes both exactly as wide as the column,
+     so they are equal by construction and the label gets its full padding. */
+  .holding .actions {
+    flex-direction: column;
+    align-items: stretch
+  }
+
+  .holding .actions .btn,
+  .holding .actions .btn-outline-inverse {
+    flex: 0 0 auto;
+    min-height: 52px;
+    padding: 12px 20px
+  }
+}
+
+/* Below ~340px the card's half-width drops under the 59px that "Business"
+   needs at 14px, and the word spills its column. Ease the label down a step. */
+@media (max-width: 339px) {
+  .credential strong {
+    font-size: 12px
+  }
+}
+
+/* ── Stacked-scroll pair: Verity spotlight + I&I Federal band ──────────────
+   The spotlight pins under the topbar while the federal band travels up and
+   comes to rest half over it, leaving the spotlight's top half showing, then
+   both release into the next section. The two cards share one width and height.
+   `.stack-scroll` must stay transform-free — a transform on it would become
+   the containing block for the sticky child and kill the pin. */
+.stack-scroll {
+  position: relative;
+  --topbar-h: 79px;
+  /* Fallback only. script.js measures the band at the current viewport and
+     overwrites this, because the band's copy re-wraps as the column narrows —
+     405px at phone width, 310px at tablet, 336px at desktop. This value is what
+     renders if scripting is unavailable. */
+  --stack-card-h: 336px;
+  /* The spotlight's inset. The band's top edge lands on the spotlight's content
+     box, so this doubles as the strip of blank card left showing above it. */
+  --verity-pad: clamp(28px, 4vw, 52px);
+  /* Both cards hang from their section's top edge by this same distance, which
+     is what makes the overlap exact at any viewport height. Centring the pair
+     against the panel keeps the leftover gold from all pooling below the band;
+     the floor stops it going negative on short viewports. */
+  --stack-pad-top: max(32px, calc((100svh - var(--topbar-h) - var(--verity-pad) - var(--stack-card-h)) / 2));
+  /* One height for both sections. They must stay equal — the overlap maths
+     assumes their top edges coincide when the pin releases, which only holds
+     if neither section outgrows the other. */
+  --stack-section-h: max(calc(100svh - var(--topbar-h)),
+      calc(var(--stack-pad-top) + var(--verity-pad) + var(--stack-card-h) + 32px));
+}
+
+.stack-pin {
+  position: sticky;
+  top: var(--topbar-h);
+  z-index: 1;
+  min-height: var(--stack-section-h);
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 0;
+  padding: var(--stack-pad-top) 0 0;
+  background: linear-gradient(165deg, #FDFAF2 0%, #F2E5C6 100%);
+}
+
+/* Both sections' top edges coincide when the pin releases, so hanging the band
+   by the same distance as the spotlight lands it exactly over the card — the
+   copy is hidden and only the gold above the card is left showing.
+   Offset by the spotlight's own inset (plus its 1px border) so the band starts
+   where the spotlight's content does — hiding the icon and copy while leaving
+   that inset visible as a card edge above and below. */
+.stack-over {
+  position: relative;
+  z-index: 2;
+  min-height: var(--stack-section-h);
+  display: flex;
+  align-items: flex-start;
+  background: transparent;
+  border-bottom: 0;
+  padding: calc(var(--stack-pad-top) + var(--verity-pad) + 1px) 0 0;
+}
+
+/* Vertical padding is tightened from the shared `.band` value so the card holds
+   its copy without the dead space that a taller card would leave in the
+   spotlight beside it; the horizontal padding is left alone. */
+.stack-over .band {
+  width: 100%;
+  min-height: var(--stack-card-h);
+  display: flex;
+  align-items: center;
+  padding-top: 36px;
+  padding-bottom: 36px;
+  /* Matches the spotlight's corner rather than `.band`'s own 34px — the pair
+     reads as one card sliding over another, so the two radii have to agree. */
+  border-radius: var(--radius);
+  box-shadow: 0 -8px 22px rgba(10, 24, 48, .12), 0 34px 80px rgba(10, 24, 48, .20);
+}
+
+.stack-over .band > * {
+  width: 100%;
+}
+
+/* Verity spotlight — the existing gold product card, laid out as one row. */
+.verity-spotlight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(22px, 3.4vw, 44px);
+  /* Same height as the band. The band starts at this card's content box and so
+     runs past its bottom edge — the card's inset shows as a strip above only,
+     with no matching strip below. */
+  min-height: var(--stack-card-h);
+  padding: var(--verity-pad);
+  border-radius: var(--radius);
+}
+
+/* The spotlight's copy is far shorter than the federal band's, so at the shared
+   height a fixed-size icon left the card looking hollow top and bottom. Sizing
+   the icon to the card's content box fills that space instead of padding it —
+   the source PNG is 1250px square, so it takes the enlargement cleanly.
+   Derived from the card height rather than `align-self: stretch`, which would
+   let the image's 1250px intrinsic size drive the card taller instead. */
+.verity-spotlight .icon {
+  flex: 0 0 auto;
+  /* Fills the content box, which is where the band's top edge lands — so the
+     icon goes under it at the same moment the copy does. The trailing 2px is
+     the card's border, counted inside the height by box-sizing. */
+  width: calc(var(--stack-card-h) - 2 * var(--verity-pad) - 2px);
+  height: calc(var(--stack-card-h) - 2 * var(--verity-pad) - 2px);
+}
+
+.verity-spotlight-copy {
+  min-width: 0;
+}
+
+.verity-spotlight .label {
+  margin-bottom: 10px;
+}
+
+.verity-spotlight h2 {
+  font-size: clamp(30px, 3.6vw, 52px);
+  margin: 0 0 14px;
+}
+
+.verity-spotlight .lead {
+  margin: 0;
+  max-width: 62ch;
+}
+
+/* The stack runs at every width; only the spotlight's internal layout changes.
+   Its copy needs the full column width once the ribbon collapses, so the icon
+   moves above the text rather than beside it. The shared height still applies —
+   script.js measures the band at the current width and both cards follow. */
+@media (max-width: 999px) {
+  .verity-spotlight {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Stacked above the copy, the icon can no longer fill the card's height —
+     at 400px tall it would push the text off the card entirely. */
+  .verity-spotlight .icon {
+    width: 88px;
+    height: 88px;
+  }
+}
+
+/* Workforce Solutions closing line. Unwrapped it runs ~1075px, so `.lead`'s
+   550px measure clears two lines by only a couple of percent — enough that a
+   slightly wider render (fallback font before Inter loads, a zoom step) tips
+   it to three. The wider measure holds two lines with real margin, and still
+   sits inside a comfortable ~66 characters per line. */
+.callout .bullets + .lead {
+  max-width: 700px;
+}
+
+/* ── Navigation ribbon ────────────────────────────────────────────────────
+   One ribbon on every page: four dropdowns, then the I&I Federal mark and the
+   Talk to Us button. Top-level items stay links rather than buttons so each
+   still opens its own landing page — the panel is supplementary, not the only
+   way in. */
+.nav-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.caret {
+  width: 10px;
+  height: 6px;
+  flex: 0 0 auto;
+  opacity: .55;
+  transition: transform .18s ease, opacity .18s ease;
+}
+
+.dropdown:hover .caret,
+.dropdown:focus-within .caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* Opening on focus-within as well as hover keeps the panels reachable by
+   keyboard — hover alone strands them for anyone tabbing through. */
+.dropdown:focus-within .dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-panel.wide {
+  min-width: 316px;
+  padding: 14px;
+}
+
+/* Two service families side by side, each with its own heading. */
+.dropdown-panel.mega {
+  display: grid;
+  padding: 22px;
+  gap: 10px 34px;
+}
+
+.dropdown-panel.mega-2 {
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+}
+
+.mega-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.mega-head {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  padding: 6px 14px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.mega-head:hover {
+  background: none;
+  color: var(--navy);
+}
+
+.dropdown-panel .mega-col a + a {
+  font-weight: 600;
+}
+
+/* Verity Grant leads its menu and carries the flagship tag. */
+.dropdown-panel a.is-flagship {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.mega-tag,
+.flag-tag {
+  flex: 0 0 auto;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(237, 76, 44, .1);
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+/* The last menu sits at the right end of the ribbon, so its panel is anchored
+   to that edge instead of running off the viewport. */
+.nav-menu > .dropdown:last-child .dropdown-panel {
+  left: auto;
+  right: -22px;
+}
+
+@media (max-width: 1080px) {
+  /* Panels are expanded inline in the drawer, so the caret has nothing to
+     signal and the mega grid has no room to sit side by side. */
+  .caret {
+    display: none;
+  }
+
+  .dropdown-panel.mega,
+  .dropdown-panel.wide {
+    display: block;
+    grid-template-columns: none;
+    min-width: 0;
+    padding: 0 0 10px 6px;
+  }
+
+  .mega-head {
+    padding: 14px 10px 8px;
+    margin-bottom: 2px;
+  }
+
+  .nav-menu > .dropdown:last-child .dropdown-panel {
+    right: auto;
+  }
+}
+
+/* Anchor targets for the nav's sub-items. The topbar is sticky and 79px tall,
+   so without this every in-page jump parks its heading underneath the ribbon.
+   Applied to the section/card ids the menu links at, plus a little breathing
+   room above. */
+:target,
+#team,
+#federal,
+#government,
+#banking-financial-services,
+#healthcare,
+#ai-strategy-roadmaps,
+#design-architecture,
+#security-governance-compliance,
+#staff-augmentation,
+#permanent-placement,
+#talent-advisory {
+  scroll-margin-top: 100px;
+}
+
+/* ── Insights / Blog listing ──────────────────────────────────────────────
+   Article cards reuse `.card`; the whole card is the hit area via a stretched
+   link on the title, so the markup keeps one real anchor for screen readers
+   instead of wrapping everything in a second one. */
+.insight-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.insight-tag {
+  color: var(--orange);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.insight-card h3 {
+  margin: 0;
+}
+
+.insight-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.insight-card p {
+  color: var(--slate);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Push the affordance to the card's bottom edge so a row of cards with
+   different summary lengths still lines its "Read the article" up. */
+.insight-card .learn {
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.insight-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+
+/* ── Article body ─────────────────────────────────────────────────────────
+   Long-form prose. Capped at a readable measure rather than the full page
+   width, which at 1184px would run well past a comfortable line length. */
+.article-body {
+  max-width: 720px;
+}
+
+/* Smaller than a page h1. These titles run long — one is 80 characters — and at
+   the hero scale they filled most of the first screen before a word of the
+   article showed. Selector has to out-rank `.hero.small h1` above, which sets
+   86px and would otherwise win on specificity. */
+.hero.small h1.article-title {
+  font-size: clamp(24px, 2.4vw, 34px);
+  /* The page h1 sets 0.94 — that tight leading is what gives the big headings
+     their display look. Matching it here rather than the 1.22 body-ish value,
+     but eased to 1.06 so descenders on a wrapped line still clear the line
+     below at this much smaller size. */
+  line-height: 1.06;
+  max-width: 780px;
+}
+
+.article-body p {
+  color: var(--slate);
+  font-size: 17px;
+  line-height: 1.75;
+  margin: 0 0 22px;
+}
+
+.article-body h2 {
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.25;
+  margin: 44px 0 16px;
+}
+
+.article-body h3 {
+  font-size: 19px;
+  line-height: 1.35;
+  color: var(--navy);
+  margin: 32px 0 10px;
+}
+
+.article-body > *:first-child {
+  margin-top: 0;
+}
+
+.article-body ol,
+.article-body ul {
+  margin: 0 0 22px;
+  padding-left: 22px;
+  color: var(--slate);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.article-body li {
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+
+/* A standalone line the author set apart from the surrounding argument. */
+.article-quote {
+  border-left: 3px solid var(--orange);
+  padding-left: 20px;
+  margin: 28px 0;
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--navy);
+}
+
+.article-back {
+  margin-top: 36px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--orange);
+}
+
+/* The credential strip pulls itself up 36px so it overlaps the hero it follows
+   on the home page. Anywhere it sits inside an ordinary section under a
+   heading, that pull-up drags the cards over the copy above — this opts out of
+   the overlap and lets the section head's own bottom margin do the spacing. */
+.credential-strip.in-flow {
+  margin-top: 0;
+}
+
+/* Diagrams carried over from the original articles. Held to the prose measure
+   so they line up with the column rather than bleeding past it, and given an
+   intrinsic width/height in the markup so the page does not reflow as they
+   load. */
+.article-figure {
+  margin: 30px 0;
+}
+
+.article-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+
+/* Listing card covers. A fixed aspect keeps the row of cards even when the
+   source images differ by a pixel or two in height. */
+.insight-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 501 / 336;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  background: var(--soft-2);
+}
+
+/* Content that belongs in the document but not on screen — a page heading the
+   design omits, for instance. Clipped rather than `display:none`, which would
+   take it out of the accessibility tree along with the layout. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Article hero. `.breadcrumb` is fixed at top:90px and out of flow, so
+   `.breadcrumb-spacer` reserves room for it — but the generic `.hero.small`
+   padding (86px) plus that 64px spacer plus a 420px floor left a large empty
+   band under the pill before the title. An article only needs enough clearance
+   to sit below the pill, so reserve that and no more. */
+.hero.small.article-hero .page {
+  min-height: 0;
+  padding: clamp(56px, 6vw, 72px) 0 4px;
+}
+
+/* ── Touch targets ────────────────────────────────────────────────────────
+   Footer links are 25px tall and stack flush with no gap between them, so on
+   a phone adjacent links touch and a slightly-off tap opens the wrong page.
+   Padding rather than line-height, so the spacing is inside the hit area
+   instead of just pushing the rows apart visually. */
+@media (max-width: 1080px) {
+  .footer-grid a {
+    padding: 10px 0;
+  }
+
+  .footer-grid h4 {
+    margin-bottom: 8px;
+  }
+
+  /* 9.5px is below the point this reads reliably on a phone screen. */
+  .mega-tag {
+    font-size: 10.5px;
+  }
+}
+
+/* Grid items default to `min-width: auto`, so a `1fr` track cannot shrink below
+   its content's min-content width. Headings carry `text-wrap: balance`, which
+   reports an intrinsic width far wider than their longest word (358px against a
+   191px word here) — enough to push the column past the page on a 360px screen.
+   Letting these items shrink lets the heading wrap normally instead. */
+.section-head > *,
+.two > *,
+.three > *,
+.cards > *,
+.stats > * {
+  min-width: 0;
+}
+
+/* `text-wrap: balance` evens out line lengths, which reads well on wide
+   headings but on a phone can settle on a line wider than the column and
+   spill — "augmented, managed." measures 358px against a 330px page. `pretty`
+   keeps the orphan control without balancing widths, so lines wrap normally. */
+@media (max-width: 720px) {
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: pretty;
+  }
+}
+
+/* Flagship pill on a card heading. Sits inline with the title rather than
+   above it, so the card keeps its normal heading rhythm. */
+.card h3 .flag-tag {
+  margin-left: 10px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+
+/* A stat whose value is words rather than a number. The 56px numeral size is
+   far too wide for "GSA + P-BITS" in a quarter-width column — it would run past
+   the tile. Sized to sit on the same baseline weight without overflowing. */
+.stat strong.stat-text {
+  font-size: 30px;
+  line-height: 1.12;
+  letter-spacing: -.01em;
+}
+
+/* A section head centred on the page rather than sitting in the left column.
+   `.section-head`'s two-column grid leaves a wide empty track beside the copy,
+   which reads as a lopsided gap when there is nothing to fill it. One centred
+   column instead. Overrides the two-column variants above, so it has to carry
+   equal specificity — hence the doubled class. */
+.section-head.is-centered.is-centered {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+
+.section-head.is-centered > div {
+  max-width: 760px;
+}
+
+/* `.lead` is capped at 550px and would otherwise hug the left edge of the
+   centred column; the buttons are a flex row that needs centring of its own. */
+.section-head.is-centered .lead {
+  margin-inline: auto;
+}
+
+.section-head.is-centered .actions {
+  justify-content: center;
+}
+
+/* ── What we do: tighten the head-to-cards gap ────────────────────────────
+   The section head's own 72px bottom margin already separates it from the
+   cards; the lead's trailing 18px stacked on top, opening a 90px gap. */
+#what-we-do .section-head {
+  margin-bottom: clamp(30px, 3.4vw, 46px);
+}
+
+#what-we-do .section-head .lead {
+  margin-bottom: 0;
+}
+
+/* ── Bullet list: a little life on hover ──────────────────────────────────
+   The staggered reveal above brings the list in one line at a time; this adds
+   a small response to the pointer so a long list of questions does not read as
+   a static block. Transform only, so nothing reflows. */
+.bullets li {
+  transition: color .18s ease, transform .24s cubic-bezier(.16, .84, .34, 1);
+}
+
+.bullets li:before {
+  transition: transform .24s cubic-bezier(.16, .84, .34, 1), background-color .18s ease;
+}
+
+@media (hover: hover) {
+  .bullets li:hover {
+    color: var(--ink);
+    transform: translateX(4px);
+  }
+
+  .bullets li:hover:before {
+    transform: scale(1.55);
+  }
+}
+
+/* ── Questions callout (Workforce Solutions) ──────────────────────────────
+   Previously four grey bullets between two grey paragraphs: the lead-in, the
+   questions and the closing line all carried identical weight, so nothing led
+   the eye. Each of the three parts now has its own voice — a serif lead-in,
+   numbered questions, and a closing line set apart as the answer to them. */
+.callout-questions {
+  position: relative;
+  background: linear-gradient(158deg, #fff 0%, var(--soft-2) 100%);
+  padding: clamp(30px, 4.6vw, 50px);
+}
+
+.questions-lead {
+  font-family: var(--serif);
+  font-size: clamp(21px, 2.3vw, 27px);
+  line-height: 1.28;
+  letter-spacing: -.012em;
+  color: var(--navy);
+  max-width: 30ch;
+  margin: 0 0 4px;
+}
+
+/* Numerals rather than dots — these are a sequence of four, and numbering makes
+   that legible at a glance. Keeps the `.bullets` class so the staggered reveal
+   still applies, which means the dot marker has to be explicitly undone. */
+.questions-list {
+  counter-reset: q;
+  gap: 0;
+  margin: 0;
+}
+
+.questions-list li {
+  counter-increment: q;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: baseline;
+  padding: 19px 0;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 16.5px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+/* Separators sit BETWEEN questions; the first needs none, or it reads as a
+   stray rule under the lead-in rather than a divider. */
+.questions-list li:first-child {
+  border-top: 0;
+}
+
+.questions-list li:before {
+  content: "0" counter(q);
+  position: static;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--orange);
+}
+
+@media (hover: hover) {
+  .questions-list li:hover {
+    color: var(--navy);
+    transform: none;
+  }
+
+  .questions-list li:hover:before {
+    transform: translateX(3px) scale(1);
+  }
+}
+
+/* The closing line answers the four questions, so it is set apart instead of
+   reading as a fifth grey paragraph. */
+.questions-answer {
+  margin: 24px 0 0;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(18, 40, 76, .04);
+  color: var(--navy);
+  font-size: 16.5px;
+  font-weight: 600;
+  line-height: 1.62;
+}
+
+@media (max-width: 640px) {
+  .questions-list li {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+}
+
+/* ── Blue band with an illustration ───────────────────────────────────────
+   Fills the empty right half of the CTA bands. `.band:after` (the dot pattern)
+   is absolutely positioned, so it stays out of the grid rather than becoming a
+   track. */
+.band.has-visual {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(190px, 26vw, 300px);
+  gap: clamp(20px, 3vw, 44px);
+  align-items: center;
+}
+
+/* Held off the card's right edge so the artwork sits inside the composition
+   rather than hard against the corner. */
+.band-visual {
+  position: relative;
+  z-index: 2;
+  padding-right: clamp(0px, 2.6vw, 36px);
+}
+
+/* Capped by HEIGHT, not width. These bands are short strips, and a grid row
+   sizes to its tallest item — so an unusually tall asset would stretch the
+   whole card instead of sitting inside it. (Executive Search.png is 4167x11027,
+   which did exactly that.) The cap holds regardless of the source ratio. */
+.band-visual img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: clamp(170px, 24vw, 280px);
+  margin-left: auto;
+}
+
+/* Stacked, the band is a short call to action — a full-width illustration
+   would push the button down for no gain. */
+@media (max-width: 900px) {
+  .band.has-visual {
+    grid-template-columns: 1fr;
+  }
+
+  .band-visual {
+    display: none;
+  }
+}
+
+/* ── Pre-launch typography safety net ─────────────────────────────────────
+   No single word stranded on a final line, at any width. `text-wrap: pretty`
+   is the property built for exactly that. Applied broadly rather than per
+   component, so copy added later inherits it instead of needing a fix. */
+p,
+li,
+dd,
+dt,
+figcaption,
+blockquote,
+.statement,
+.lead,
+.hero-copy,
+.questions-lead,
+.questions-answer,
+.card p,
+.mini p,
+.stat span,
+.insight-card p,
+.article-body p,
+.article-body li {
+  text-wrap: pretty;
+}
+
+/* Small text carries the body tracking by default, which at 13-14px closes the
+   letters up. Ease it back so captions, labels and card copy stay legible. */
+.stat span,
+.credential strong,
+.footer a,
+.footer p,
+.learn,
+.insight-tag {
+  letter-spacing: 0;
+}
